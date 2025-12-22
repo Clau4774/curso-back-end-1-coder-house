@@ -1,1 +1,112 @@
-[]
+[
+  {
+    "id": 1,
+    "title": "Auriculares Wireless Pro",
+    "description": "Auriculares con cancelación de ruido activa y 30 horas de autonomía.",
+    "code": "AUD-001",
+    "price": 89.99,
+    "status": true,
+    "stock": 25,
+    "category": "Audio",
+    "thumbnails": ""
+  },
+  {
+    "id": 2,
+    "title": "Teclado Mecánico RGB",
+    "description": "Teclado con switches red y retroiluminación personalizada.",
+    "code": "TEC-002",
+    "price": 55.5,
+    "status": true,
+    "stock": 15,
+    "category": "Periféricos",
+    "thumbnails": ""
+  },
+  {
+    "id": 3,
+    "title": "Mouse Gamer Ergonómico",
+    "description": "Mouse con sensor óptico de 16000 DPI y 6 botones programables.",
+    "code": "MOU-003",
+    "price": 32.0,
+    "status": true,
+    "stock": 40,
+    "category": "Periféricos",
+    "thumbnails": ""
+  },
+  {
+    "id": 4,
+    "title": "Monitor 27\" 4K",
+    "description": "Monitor Ultra HD con panel IPS y tasa de refresco de 144Hz.",
+    "code": "MON-004",
+    "price": 299.99,
+    "status": true,
+    "stock": 8,
+    "category": "Monitores",
+    "thumbnails": ""
+  },
+  {
+    "id": 5,
+    "title": "Smartwatch Serie 5",
+    "description": "Reloj inteligente con GPS, sensor de ritmo cardíaco y sumergible.",
+    "code": "SWA-005",
+    "price": 120.0,
+    "status": true,
+    "stock": 12,
+    "category": "Wearables",
+    "thumbnails": ""
+  },
+  {
+    "id": 6,
+    "title": "Cámara Web Full HD",
+    "description": "Webcam 1080p con micrófono integrado y corrección de luz automática.",
+    "code": "CAM-006",
+    "price": 45.0,
+    "status": true,
+    "stock": 20,
+    "category": "Accesorios",
+    "thumbnails": ""
+  },
+  {
+    "id": 7,
+    "title": "SSD Externo 1TB",
+    "description": "Unidad de estado sólido portátil de alta velocidad con conexión USB-C.",
+    "code": "STO-007",
+    "price": 110.0,
+    "status": true,
+    "stock": 30,
+    "category": "Almacenamiento",
+    "thumbnails": ""
+  },
+  {
+    "id": 8,
+    "title": "Lámpara de Escritorio LED",
+    "description": "Lámpara con control táctil, varios niveles de brillo y carga inalámbrica.",
+    "code": "LAM-008",
+    "price": 28.5,
+    "status": false,
+    "stock": 0,
+    "category": "Hogar",
+    "thumbnails": ""
+  },
+  {
+    "id": 9,
+    "title": "Soporte para Laptop",
+    "description": "Soporte de aluminio ajustable y plegable para mejorar la ergonomía.",
+    "code": "SOP-009",
+    "price": 19.99,
+    "status": true,
+    "stock": 50,
+    "category": "Accesorios",
+    "thumbnails": ""
+  },
+  {
+    "id": 10,
+    "title": "Hub USB-C 7 en 1",
+    "description": "Adaptador con HDMI, puertos USB 3.0 y lector de tarjetas SD.",
+    "code": "HUB-010",
+    "price": 35.0,
+    "status": true,
+    "stock": 18,
+    "category": "Accesorios",
+    "thumbnails": ""
+  }
+]

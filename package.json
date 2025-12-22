@@ -1,7 +1,7 @@
 {
-  "name": "primera-entrega",
+  "name": "curso-back-end-1-coder-house",
   "version": "1.0.0",
-  "description": "Primera entrega curso back-end I CoderHouse",
+  "description": "Curso back-end I coderHouse",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
