@@ -20,15 +20,17 @@ productsRouter.get('/:pid', async (req, res) => {
     try {
         const {pid} = req.params; 
         const productManager = new ProductManager(productRoute)
+        console.log('router acá')
         const data = await productManager.getProduct(pid);
-        console.log(data, 'data')
+        if(data.code) {
+            throw data;
+        } 
         res.json(data);
 
     } catch (error) {
-        if(error.code === 404){
-            console.error(error), 'error productsRouter';
-            return res.json(error);
-        }
+        console.error(error);
+        res.status(error.code).json(error);
+        
         
     }
 })

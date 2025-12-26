@@ -68,31 +68,41 @@ export class ProductManager {
             const productsList = await this.getProducts();
 
             if(productsList.length === 0) {
-                const err = new Error('La lista está vacía');
-                err.code = 404;
+                const err = {
+                    message: `La lista de productos está vacía.`,
+                    code: 404
+                }
                 throw err;
             }
 
             const id = Number(pid);
             const pidIsNAN = Number.isNaN(id);
             const pidIsNotInteger = !Number.isInteger(id); 
-            console.log(pidIsNAN, 'pidIsNAN')
-            console.log(pidIsNotInteger, 'pidIsNotInteger')
-
-            console.log(id, 'id')
 
             if(pidIsNAN || pidIsNotInteger){
-                const err = new Error('El id tiene que ser un número');
-                err.code = 400;
+                // const err = {
+                //     message: `El id "${pid}" tiene que ser un número`,
+                //     code: 400
+                // }
+
+                // throw err
+                const err = {
+                    message: `El id "${pid}" tiene que ser un número entero`,
+                    code: 400
+                };
                 throw err;
             }
             
             const productFound = productsList.find(product => product.id === id);
 
+            console.log(productFound)
+
             if(!productFound){
                 
-                const err = new Error(`No se ha encontrado el producto con id: ${id}`);
-                err.code = 404;
+                const err = {
+                    message: `No se ha encontrado el producto con id "${id}", por favor pruebe con otro`,
+                    code: 404
+                }
                 throw err
                 
             }
@@ -100,8 +110,9 @@ export class ProductManager {
             
 
         } catch (error) {
-            console.error(error.message);
-            throw error;
+            //console.error(error.message);
+            console.log(error, 'error productManager')
+            return error;
             
         }
     }
