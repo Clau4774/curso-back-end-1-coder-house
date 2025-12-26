@@ -44,7 +44,9 @@ productsRouter.post('/', async (req, res) => {
 
         const createProduct = await productManager.addProduct(productData);
 
-        if(createProduct.code === 400) {
+        console.log(createProduct,'createProduct')
+
+        if(createProduct.status === 400) {
             throw createProduct;
         }
 
@@ -55,19 +57,57 @@ productsRouter.post('/', async (req, res) => {
 
     } catch (error) {
         console.error(error);
-        res.status(error.code).json(error);
+        res.status(error.status).json(error);
     }
 })
 
 productsRouter.put('/:pid', async (req, res) => {
     try {
         const {pid} = req.params;
+        const data = req.body;
         if(pid.trim() === undefined) {
             res.status(400).json({message: `El id no fue enviado`, status:400});
         };
 
+        const updatedProduct = {
+            pid,
+            data
+        }
+
+
         const productManager = new ProductManager(productRoute);
-        
+
+        const updateProduct = await productManager.updateProduct(updatedProduct);
+
+        if(updateProduct.status === 404) {
+            throw updateProduct;
+        }
+
+        res.json(updateProduct);
+
+
+    } catch (error) {
+        console.error(error);
+        res.status(error.code).json(error);
+    }
+})
+
+productsRouter.delete('/:pid', async (req, res) => {
+    try {
+        const {pid} = req.params;
+        if(pid.trim() === undefined) {
+            res.status(400).json({message: `El id no fue enviado`, status:400});
+        };
+        const productManager = new ProductManager(productRoute);
+
+        const updateProduct = await productManager.deleteProduct(pid);
+
+        if(updateProduct.status === 404) {
+            throw updateProduct;
+        }
+
+        res.json(updateProduct);
+
 
     } catch (error) {
         console.error(error);

@@ -42,7 +42,7 @@ export class ProductManager {
 
             const productListUpdated = [...productsList, createProductWithId];
 
-            const productListStringified = JSON.stringify(productListUpdated, 1);
+            const productListStringified = JSON.stringify(productListUpdated, null ,1);
 
             const writingFile = await fs.writeFile(this.productsRoute, productListStringified, 'utf-8');
 
@@ -110,7 +110,7 @@ export class ProductManager {
             
             const productFound = productsList.find(product => product.id == pid);
 
-            console.log(productFound, 'productFound')
+            console.log(productFound, 'productFound, getProduct')
 
             if(!productFound){
                 
@@ -132,8 +132,10 @@ export class ProductManager {
         }
     }
 
-    async updateProduct(pid) {
+    async updateProduct(updatedProduct) {
         try {
+
+            const {pid, data} = updatedProduct;
             
             const pidIsEmpty = pid.trim() === '' || undefined;
 
@@ -146,20 +148,94 @@ export class ProductManager {
                 throw err
             }
 
-            const findProduct = this.getProduct(pid);
+            const productsList = await this.getProducts();
 
+            const findProduct = await this.getProduct(pid);
+
+            
             if(!findProduct) {
+                
                 const err = {
                     message: `Producto no encontrado con el id: ${pid}`,
                     status: 404
                 }
+
+                throw err;
             }
+
+            
+            const updateProduct = {...findProduct, ...data};
+
+            console.log(updateProduct, "updateProduct")
+
+            const updatedProductsLists = productsList.map(productToUpdate => {
+                if(productToUpdate.id === Number(pid)) return updateProduct;
+                return productToUpdate;
+            });
+
+            const stringifiedProductsList = JSON.stringify(updatedProductsLists, null, 1)
+
+            await fs.writeFile(this.productsRoute, stringifiedProductsList);
+
+            const productUpdateMessage = {
+                message: `Producto con id: ${pid}, ha sido modificado con éxito`,
+                status: 200,
+                updateProduct
+            }
+
+            return productUpdateMessage;
+
 
         } catch (error) {
         
             console.error(error);
             return error;
 
+        }
+    }
+
+    async deleteProduct(pid) {
+        try {
+            const pidIsEmpty = pid.trim() === '';
+
+            if(pidIsEmpty) {
+                const err = {
+                    message: 'Debe ingresar un id',
+                    status: 400
+                };
+
+                throw err;
+            }
+
+            const productsList = await this.getProducts();
+            const findProduct = await this.getProduct(pid);
+
+            if(!findProduct) {
+                const err = {
+                    message: `No se ha encontrado producto con id: ${pid}`,
+                    status: 404
+                }
+
+                throw err;
+            }
+
+            const deleteProduct = productsList.filter(product => product.id != pid);
+
+            const stringifiedProductsList = JSON.stringify(deleteProduct, null, 1);
+
+            await fs.writeFile(this.productsRoute, stringifiedProductsList, 'utf8');
+
+            const operationSuccess = {
+                message: `Producto con id: ${pid} eliminado con éxito`,
+                status: 200,
+                deletedProduct: findProduct
+            }
+
+            return operationSuccess;
+
+        } catch (error) {
+            console.error(error);
+            return error;
         }
     }
 
