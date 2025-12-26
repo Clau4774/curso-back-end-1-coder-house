@@ -9,6 +9,7 @@ productsRouter.get('/', async (__, res) => {
     try {
         const productManager = new ProductManager(productRoute)
         const data = await productManager.getProducts();
+        console.log(typeof true, 'typeof true')
         res.json(data);
 
     } catch (error) {
@@ -20,9 +21,9 @@ productsRouter.get('/:pid', async (req, res) => {
     try {
         const {pid} = req.params; 
         const productManager = new ProductManager(productRoute)
-        console.log('router acá')
         const data = await productManager.getProduct(pid);
-        if(data.code) {
+        
+        if(data.code === 400 || data.code === 404) {
             throw data;
         } 
         res.json(data);
@@ -35,9 +36,17 @@ productsRouter.get('/:pid', async (req, res) => {
     }
 })
 
-productsRouter.post('/', (req, res) => {
+productsRouter.post('/', async (req, res) => {
     try {
-        
+        const productData = req.body;
+        console.log(productData, 'productData');
+        //console.log(productData, 'productData');
+
+        const productManager = new ProductManager(productRoute);
+
+        const createProduct = await productManager.addProduct(productData);
+
+
 
 
     } catch (error) {

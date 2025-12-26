@@ -20,21 +20,42 @@ export class ProductManager {
     async addProduct(product) {
         try {
 
-            const isString = typeof product === 'string';
-            if(isString) {
-                const parseProduct = JSON.parse(product);
-                const newId = crypto.randomUUID();
-                const productWithId = {...parseProduct, id: newId};                    
+            console.log(product, 'product addProduct')
+            const productDataOk = this.checkProductData(product);
 
-                console.log(productWithId);
-            }
-            
+            if(productDataOk.message || product.code) throw productDataOk;
+
             const productsList = await this.getProducts();
 
+            const findProduct = productsList.find(productInList = productInList.code === product.code);
+
+            if(findProduct) {
+                const err = {
+                    message: `Ya hay un producto cargado con el código ${product.code}`,
+                    code: 400
+                }
+
+                throw err;
+            }
+
+            const parseProduct = JSON.parse(product);
+
+            const createProductWithId = {...parseProduct, id: crypto.randomUUID()};
+
+            const productListUpdated = [...productsList, createProductWithId];
+
+            const productListStringified = JSON.stringify(productListUpdated);
+
+            const writingFile = await fs.writeFile(this.productsRoute, productListStringified, 'utf-8');
+
+            console.log(writingFile, 'writingFile');
+
+            res.status(201).json({message: `producto con código ${product.code} creado satisfactoriamente.`, code: 201});
 
 
         } catch (error) {
             console.error(error);
+            return error;
         }
 
     }
@@ -44,8 +65,10 @@ export class ProductManager {
             const request = await fs.readFile(this.productsRoute, 'utf-8');
 
             if (request === undefined) {
-                const err = new Error('El archivo no ha sido creado aún');
-                err.code = 404;
+                const err = {
+                    message: 'El archivo no ha sido creado aún',
+                    code: 404
+                }
                 throw err;
             }
 
@@ -115,5 +138,151 @@ export class ProductManager {
             return error;
             
         }
+    }
+
+    checkProductData(product) {
+        const {title, description, code, price, status, stock, category} = product;
+        const errorHandler = (error) => {
+            return {message: error.message, code: error.code }
+        }
+
+        if (title.trim() === '' ) {
+            const error = {
+                message: 'El title está vació, complete esté campo',
+                code: 400
+            }
+
+            return errorHandler(error)
+        }
+
+        if (isNaN(Number(title))) {
+            const error = {
+                message: 'El title no tiene que ser solo un números',
+                code: 400
+            }
+
+            return errorHandler(error)
+        }
+        if (description.trim() === '' ) {
+            const error = {
+                message: 'La descripción está vacía, complete esté campo',
+                code: 400
+            }
+
+            return errorHandler(error)
+        }
+
+        if (isNaN(Number(description))) {
+            const error = {
+                message: 'La descripción no tiene que ser solo un números',
+                code: 400
+            }
+
+            return errorHandler(error)
+        }
+        
+        if (code.trim() === '' ) {
+            const error = {
+                message: 'El campo código está vacío, complete esté campo',
+                code: 400
+            }
+
+            return errorHandler(error)
+        }
+
+        if (isNaN(Number(code))) {
+            const error = {
+                message: 'El código no debe ser solo números',
+                code: 400
+            }
+
+            return errorHandler(error)
+        }
+
+        if (price.trim() === '' ) {
+            const error = {
+                message: 'El precio está vacío, complete esté campo',
+                code: 400
+            }
+
+            return errorHandler(error)
+        }
+
+        if (!isNaN(Number(price))) {
+            const error = {
+                message: 'Debe ingresar números únicamente en este campo',
+                code: 400
+            }
+
+            return errorHandler(error);
+        }
+
+        if (status.trim() === '' ) {
+            const error = {
+                message: 'El status está vacío, complete esté campo',
+                code: 400
+            }
+
+            return errorHandler(error)
+        }
+
+        if (!isNaN(Number(status))) {
+            const error = {
+                message: 'Debe elegir una opción válida',
+                code: 400
+            }
+
+            return errorHandler(error);
+        }
+
+        if (typeof status === 'boolean') {
+            const error = {
+                message: 'Debe ingresar un valor booleano',
+                code: 400
+            }
+
+            return errorHandler(error);
+        }
+
+        
+        if (stock.trim() === '' ) {
+            const error = {
+                message: 'El campo está vacío, complete esté campo',
+                code: 400
+            }
+
+            return errorHandler(error)
+        }
+
+        if (isNaN(Number(status))) {
+            const error = {
+                message: 'Debe ingresar números en este campo',
+                code: 400
+            }
+
+            return errorHandler(error);
+        }
+
+        
+        if (category.trim() === '' ) {
+            const error = {
+                message: 'El campo category está vacío, complete esté campo',
+                code: 400
+            }
+
+            return errorHandler(error)
+        }
+
+        if (!isNaN(Number(category))) {
+            const error = {
+                message: 'No debe ingresar solo números en este campo',
+                code: 400
+            }
+
+            return errorHandler(error);
+        }
+
+        return null;
+        
     }
 }
