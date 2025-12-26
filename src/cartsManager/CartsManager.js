@@ -1,23 +1,15 @@
 import fs from 'node:fs/promises';
 
-export class ProductManager {
-    constructor(productsRoute) {
-        this.productsRoute = productsRoute;
+export class CartsManager {
+    constructor(cartsPath) {
+        this.cartsPath = cartsPath;
     };
 
-    // async addProducts(products) {
-    //     try {
-            
-            
-    //         const productsList = await this.getProducts();
+    async createNewCart(cid, arr) {
+        
+    }
 
-
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // }
-
-    async addProduct(product) {
+    async addProductToCart(product) {
         try {
 
             console.log(product, 'product addProduct')
@@ -63,7 +55,7 @@ export class ProductManager {
 
     }
 
-    async getProducts() {
+    async getCarts() {
         try {
             const request = await fs.readFile(this.productsRoute, 'utf-8');
 
@@ -88,18 +80,16 @@ export class ProductManager {
         }
     }
 
-    async getProduct(pid) {
+    async getCart(pid) {
         try {
 
-            console.log(pid, 'pid');
-            console.log(typeof pid, 'typeof pid');
-
+            
             const productsList = await this.getProducts();
 
             if(productsList.length === 0) {
                 const err = {
                     message: `La lista de productos está vacía.`,
-                    status: 404
+                    code: 404
                 }
                 throw err;
             }
