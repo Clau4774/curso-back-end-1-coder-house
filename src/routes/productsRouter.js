@@ -39,17 +39,38 @@ productsRouter.get('/:pid', async (req, res) => {
 productsRouter.post('/', async (req, res) => {
     try {
         const productData = req.body;
-        console.log(productData, 'productData');
-        //console.log(productData, 'productData');
-
+        
         const productManager = new ProductManager(productRoute);
 
         const createProduct = await productManager.addProduct(productData);
+
+        if(createProduct.code === 400) {
+            throw createProduct;
+        }
+
+        res.status(201).json(createProduct);
 
 
 
 
     } catch (error) {
         console.error(error);
+        res.status(error.code).json(error);
+    }
+})
+
+productsRouter.put('/:pid', async (req, res) => {
+    try {
+        const {pid} = req.params;
+        if(pid.trim() === undefined) {
+            res.status(400).json({message: `El id no fue enviado`, status:400});
+        };
+
+        const productManager = new ProductManager(productRoute);
+        
+
+    } catch (error) {
+        console.error(error);
+        res.status(error.code).json(error);
     }
 })
