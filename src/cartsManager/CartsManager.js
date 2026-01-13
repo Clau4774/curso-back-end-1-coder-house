@@ -5,59 +5,74 @@ export class CartsManager {
         this.cartsPath = cartsPath;
     };
 
-    async createNewCart(cid, arr) {
-        
-    }
-
-    async addProductToCart(product) {
+    async createNewCart() {
         try {
-
-            console.log(product, 'product addProduct')
-            const productDataOk = this.checkProductData(product);
-
-            if(productDataOk?.message || productDataOk?.code) throw productDataOk;
-
-            const productsList = await this.getProducts();
-
-            const findProduct = productsList.find(productInList => productInList.code === product.code);
-
-            if(findProduct) {
-                const err = {
-                    message: `Ya hay un producto cargado con el código ${product.code}`,
-                    status: 400
-                }
-
-                throw err;
+            const newCart = {
+                cid: crypto.randomUUID(),
+                products: []
             }
 
-            const createProductWithId = {...product, id: crypto.randomUUID()};
+            const cartsList = await this.getCarts();
+            const updatedCartsList = [...cartsList, newCart];
 
-            const productListUpdated = [...productsList, createProductWithId];
+            await fs.writeFile(this.cartsPath, JSON.stringify(updatedCartsList, null, 2), 'utf-8');
 
-            const productListStringified = JSON.stringify(productListUpdated, null ,1);
-
-            const writingFile = await fs.writeFile(this.productsRoute, productListStringified, 'utf-8');
-
-            console.log(writingFile, 'writingFile');
-
-            const successMessage = {
-                message: `producto con código ${product.code} creado satisfactoriamente.`, status: 201,
-                product: createProductWithId
-            };
-
-            return successMessage;
-
-
+            return newCart;
+            
         } catch (error) {
-            console.error(error);
             return error;
         }
-
     }
+
+    // async addProductToCart(product) {
+    //     try {
+
+    //         console.log(product, 'product addProduct')
+    //         const productDataOk = this.checkProductData(product);
+
+    //         if(productDataOk?.message || productDataOk?.code) throw productDataOk;
+
+    //         const productsList = await this.getProducts();
+
+    //         const findProduct = productsList.find(productInList => productInList.code === product.code);
+
+    //         if(findProduct) {
+    //             const err = {
+    //                 message: `Ya hay un producto cargado con el código ${product.code}`,
+    //                 status: 400
+    //             }
+
+    //             throw err;
+    //         }
+
+    //         const createProductWithId = {...product, id: crypto.randomUUID()};
+
+    //         const productListUpdated = [...productsList, createProductWithId];
+
+    //         const productListStringified = JSON.stringify(productListUpdated, null ,1);
+
+    //         const writingFile = await fs.writeFile(this.productsRoute, productListStringified, 'utf-8');
+
+    //         console.log(writingFile, 'writingFile');
+
+    //         const successMessage = {
+    //             message: `producto con código ${product.code} creado satisfactoriamente.`, status: 201,
+    //             product: createProductWithId
+    //         };
+
+    //         return successMessage;
+
+
+    //     } catch (error) {
+    //         console.error(error);
+    //         return error;
+    //     }
+
+    // }
 
     async getCarts() {
         try {
-            const request = await fs.readFile(this.productsRoute, 'utf-8');
+            const request = await fs.readFile(this.cartsPath, 'utf-8');
 
             if (request === undefined) {
                 const err = {
@@ -67,56 +82,50 @@ export class CartsManager {
                 throw err;
             }
 
-            const productsList = JSON.parse(request);
+            const cartsList = JSON.parse(request);
 
-            return productsList;
+            return cartsList;
 
         } catch (error) {
             if(error.code === 'ENOENT') {
-                await fs.writeFile(this.productsRoute, '[]','utf-8');
+                await fs.writeFile(this.cartsPath, '[]','utf-8');
                 return [];
             }
             return error;
         }
     }
 
-    async getCart(pid) {
+    async getCart(cid) {
         try {
 
-            
-            const productsList = await this.getProducts();
+            const cidToNumber = Number(cid);
+            const cidIsNumber = isNaN(cidToNumber);
 
-            if(productsList.length === 0) {
+            if(!cidIsNumber) {
                 const err = {
-                    message: `La lista de productos está vacía.`,
-                    code: 404
-                }
+                    message: `El cid es un número y debe ser un randomUUID`,
+                    status: 400
+                };
+                throw err;
+            }
+            
+            const cartsList = await this.getCarts();
+            const findCart = cartsList.find(cart => cart.cid === cid);
+
+            if (!findCart) {
+                const err = {
+                    message: `No pudimos encontrar el carro con cid: ${cid}, por favor pruebe con un carro existente`,
+                    status: 404
+                };
                 throw err;
             }
 
-            // const id = Number(pid);
-            // const pidIsNAN = Number.isNaN(id);
-            // const pidIsNotInteger = !Number.isInteger(id); 
-            
-            const productFound = productsList.find(product => product.id == pid);
-
-            console.log(productFound, 'productFound, getProduct')
-
-            if(!productFound){
-                
-                const err = {
-                    message: `No se ha encontrado el producto con id "${pid}", por favor pruebe con otro`,
-                    status: 404
-                }
-                throw err
-                
-            }
-            return productFound;
+            return findCart;
             
 
         } catch (error) {
             //console.error(error.message);
-            console.log(error, 'error productManager')
+            console.log(error, 'error CartManager')
             return error;
             
         }

@@ -5,25 +5,13 @@ export class ProductManager {
         this.productsRoute = productsRoute;
     };
 
-    // async addProducts(products) {
-    //     try {
-            
-            
-    //         const productsList = await this.getProducts();
-
-
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // }
-
     async addProduct(product) {
         try {
 
             console.log(product, 'product addProduct')
             const productDataOk = this.checkProductData(product);
 
-            if(productDataOk?.message || productDataOk?.code) throw productDataOk;
+            if(productDataOk?.message || productDataOk?.status) throw productDataOk;
 
             const productsList = await this.getProducts();
 
@@ -241,7 +229,7 @@ export class ProductManager {
 
 
     checkProductData(product) {
-        const {title, description, code, price, status, stock, category} = product;
+        const {title, description, code, price, status, category} = product;
         const errorHandler = (error) => {
             return {message: error.message, status: error.status }
         }

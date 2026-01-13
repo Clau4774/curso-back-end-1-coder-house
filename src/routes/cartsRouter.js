@@ -5,38 +5,38 @@ const cartsRoute = 'src/data/carts.json'
 
 export const cartsRouter = express.Router();
 
-// productsRouter.get('/:', async (__, res) => {
-//     try {
-//         const productManager = new ProductManager(productRoute)
-//         const data = await productManager.getProducts();
-//         console.log(typeof true, 'typeof true')
-//         res.json(data);
+cartsRouter.post('/', async (req, res) => {
+    try {
+        const cartManager = new CartsManager(cartsRoute)
+        const data = await cartManager.createNewCart();
+        res.status(201).json({message: `Se ha creado un carro nuevo con id: ${data.cid}.`})
 
-//     } catch (error) {
-//         console.error(error)
-//     }
-// })
+    } catch (error) {
+        console.error(error);
+        res.status(error.status).json(error);
+    }
+})
 
 cartsRouter.get('/:cid', async (req, res) => {
     try {
-        const {pid} = req.params; 
-        const productManager = new CartsManager(cartsRoute)
-        const data = await productManager.getProduct(pid);
+        const {cid} = req.params; 
+        const cartManager = new CartsManager(cartsRoute)
+        const data = await cartManager.getCart(cid);
         
-        if(data.code === 400 || data.code === 404) {
+        if(data.status === 400 || data.status === 404) {
             throw data;
         } 
         res.json(data);
 
     } catch (error) {
         console.error(error);
-        res.status(error.code).json(error);
+        res.status(error.status).json(error);
         
         
     }
 })
 
-productsRouter.post('/', async (req, res) => {
+cartsRouter.post('/', async (req, res) => {
     try {
         const productData = req.body;
         
@@ -61,7 +61,7 @@ productsRouter.post('/', async (req, res) => {
     }
 })
 
-productsRouter.put('/:pid', async (req, res) => {
+cartsRouter.put('/:pid', async (req, res) => {
     try {
         const {pid} = req.params;
         const data = req.body;
@@ -92,7 +92,7 @@ productsRouter.put('/:pid', async (req, res) => {
     }
 })
 
-productsRouter.delete('/:pid', async (req, res) => {
+cartsRouter.delete('/:pid', async (req, res) => {
     try {
         const {pid} = req.params;
         if(pid.trim() === undefined) {
