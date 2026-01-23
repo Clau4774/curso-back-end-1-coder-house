@@ -24,52 +24,6 @@ export class CartsManager {
         }
     }
 
-    // async addProductToCart(product) {
-    //     try {
-
-    //         console.log(product, 'product addProduct')
-    //         const productDataOk = this.checkProductData(product);
-
-    //         if(productDataOk?.message || productDataOk?.code) throw productDataOk;
-
-    //         const productsList = await this.getProducts();
-
-    //         const findProduct = productsList.find(productInList => productInList.code === product.code);
-
-    //         if(findProduct) {
-    //             const err = {
-    //                 message: `Ya hay un producto cargado con el código ${product.code}`,
-    //                 status: 400
-    //             }
-
-    //             throw err;
-    //         }
-
-    //         const createProductWithId = {...product, id: crypto.randomUUID()};
-
-    //         const productListUpdated = [...productsList, createProductWithId];
-
-    //         const productListStringified = JSON.stringify(productListUpdated, null ,1);
-
-    //         const writingFile = await fs.writeFile(this.productsRoute, productListStringified, 'utf-8');
-
-    //         console.log(writingFile, 'writingFile');
-
-    //         const successMessage = {
-    //             message: `producto con código ${product.code} creado satisfactoriamente.`, status: 201,
-    //             product: createProductWithId
-    //         };
-
-    //         return successMessage;
-
-
-    //     } catch (error) {
-    //         console.error(error);
-    //         return error;
-    //     }
-
-    // }
-
     async getCarts() {
         try {
             const request = await fs.readFile(this.cartsPath, 'utf-8');
@@ -140,4 +94,6 @@ export class CartsManager {
             return error;
         }
     }
+
+
 }
