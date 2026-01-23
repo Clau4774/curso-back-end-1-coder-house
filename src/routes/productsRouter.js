@@ -1,7 +1,8 @@
 import express from 'express';
 import { ProductManager } from '../productManager/ProductManager.js';
+import { join } from 'node:path';
 
-const productRoute = 'src/data/products.json'
+const productRoute = join('src', 'data', 'products.json');
 
 export const productsRouter = express.Router();
 

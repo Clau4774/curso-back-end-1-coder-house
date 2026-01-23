@@ -1,9 +1,14 @@
 import express from 'express';
 import { CartsManager } from '../cartsManager/CartsManager.js';
+import { join } from 'node:path';
 
-const cartsRoute = 'src/data/carts.json'
+
+const cartsRoute =  join('src', 'data', 'carts.json');
+
 
 export const cartsRouter = express.Router();
+
+//creates a new cart
 
 cartsRouter.post('/', async (req, res) => {
     try {
@@ -16,6 +21,8 @@ cartsRouter.post('/', async (req, res) => {
         res.status(error.status).json(error);
     }
 })
+
+//get cart by id
 
 cartsRouter.get('/:cid', async (req, res) => {
     try {
@@ -36,21 +43,13 @@ cartsRouter.get('/:cid', async (req, res) => {
     }
 })
 
-cartsRouter.post('/', async (req, res) => {
+//add product to cart
+
+cartsRouter.post('/:cid/product/:pid', async (req, res) => {
     try {
-        const productData = req.body;
-        
-        const productManager = new ProductManager(productRoute);
+        const {cid, pid} = req.params;
+        const cartManager = new CartsManager(cartsRoute);
 
-        const createProduct = await productManager.addProduct(productData);
-
-        console.log(createProduct,'createProduct')
-
-        if(createProduct.status === 400) {
-            throw createProduct;
-        }
-
-        res.status(201).json(createProduct);
 
 
 
@@ -58,59 +57,5 @@ cartsRouter.post('/', async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(error.status).json(error);
-    }
-})
-
-cartsRouter.put('/:pid', async (req, res) => {
-    try {
-        const {pid} = req.params;
-        const data = req.body;
-        if(pid.trim() === undefined) {
-            res.status(400).json({message: `El id no fue enviado`, status:400});
-        };
-
-        const updatedProduct = {
-            pid,
-            data
-        }
-
-
-        const productManager = new ProductManager(productRoute);
-
-        const updateProduct = await productManager.updateProduct(updatedProduct);
-
-        if(updateProduct.status === 404) {
-            throw updateProduct;
-        }
-
-        res.json(updateProduct);
-
-
-    } catch (error) {
-        console.error(error);
-        res.status(error.code).json(error);
-    }
-})
-
-cartsRouter.delete('/:pid', async (req, res) => {
-    try {
-        const {pid} = req.params;
-        if(pid.trim() === undefined) {
-            res.status(400).json({message: `El id no fue enviado`, status:400});
-        };
-        const productManager = new ProductManager(productRoute);
-
-        const updateProduct = await productManager.deleteProduct(pid);
-
-        if(updateProduct.status === 404) {
-            throw updateProduct;
-        }
-
-        res.json(updateProduct);
-
-
-    } catch (error) {
-        console.error(error);
-        res.status(error.code).json(error);
     }
 })

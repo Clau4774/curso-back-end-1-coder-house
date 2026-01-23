@@ -1,16 +1,5 @@
 [
  {
-  "id": 2,
-  "title": "Teclado Mecánico RGB",
-  "description": "Teclado con switches red y retroiluminación personalizada.",
-  "code": "TEC-002",
-  "price": 55.5,
-  "status": true,
-  "stock": 15,
-  "category": "Periféricos",
-  "thumbnails": ""
- },
- {
   "id": 3,
   "title": "Mouse Gamer Ergonómico",
   "description": "Mouse con sensor óptico de 16000 DPI y 6 botones programables.",
