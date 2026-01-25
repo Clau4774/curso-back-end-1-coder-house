@@ -1,10 +1,10 @@
-import express from 'express';
+import Router from 'express';
 import { ProductManager } from '../productManager/ProductManager.js';
 import { join } from 'node:path';
 
 const productRoute = join('src', 'data', 'products.json');
 
-export const productsRouter = express.Router();
+export const productsRouter = Router();
 
 productsRouter.get('/', async (__, res) => {
     try {

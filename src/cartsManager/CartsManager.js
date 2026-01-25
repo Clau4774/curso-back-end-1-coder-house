@@ -52,15 +52,10 @@ export class CartsManager {
     async getCart(cid) {
         try {
 
-            const cidToNumber = Number(cid);
-            const cidIsNumber = isNaN(cidToNumber);
+            const checkCartId = this.checkCartId(cid);
 
-            if(!cidIsNumber) {
-                const err = {
-                    message: `El cid es un número y debe ser un randomUUID`,
-                    status: 400
-                };
-                throw err;
+            if(checkCartId.status) {
+                throw checkCartId;
             }
             
             const cartsList = await this.getCarts();
@@ -78,7 +73,6 @@ export class CartsManager {
             
 
         } catch (error) {
-            //console.error(error.message);
             console.log(error, 'error CartManager')
             return error;
             
@@ -87,7 +81,47 @@ export class CartsManager {
 
     async addProductToCart(cid, pid) {
         try {
+
+            const checkCartId = this.checkCartId(cid);
+
+            if(checkCartId.status) {
+                throw checkCartId;
+            }
             
+            const getCart = await this.getCart(cid);
+            const getCarts = await this.getCarts();
+
+            const productInCart = getCart.products.find(product => product.pid === pid);
+
+            console.log(productInCart, 'productInCart')
+
+            if(!productInCart) {
+                const updatedCart = {...getCart, products: [...getCart.products, { pid, quantity: 1 }]};
+                const updatedCartsList = getCarts.map(cart => cart.cid === getCart.cid ? cart.products = updatedCart : cart);
+                
+                await fs.writeFile(this.cartsPath, JSON.stringify(updatedCartsList, null, 2));
+
+                const successMessage = {
+                    message: `Se ha actualizado el carro con cid ${cid}, y se ha agregado el producto con id ${pid}`,
+                    cart: updatedCart,
+                    status: 200
+                }
+                return successMessage;
+            }
+
+            const updatedCart = {cid, products: getCart.products.map(product => product.pid === pid ? {pid, quantity: product.quantity + 1} : product)};
+            console.log(updatedCart, 'updatedCart')
+            
+            const updatedCartsList = getCarts.map(cart => cart.cid === getCart.cid ? updatedCart : cart);
+            await fs.writeFile(this.cartsPath, JSON.stringify(updatedCartsList, null, 2));
+            
+            const successMessage = {
+                    message: `Se ha actualizado el carro con cid ${cid}, y se ha agregado el producto con id ${pid}`,
+                    cart: updatedCart,
+                    status: 200
+                }
+
+                return successMessage;
             
         } catch (error) {
             console.log(error, 'error CartManager')
@@ -95,5 +129,19 @@ export class CartsManager {
         }
     }
 
+    checkCartId(cid) {
+        const cidToNumber = Number(cid);
+        const cidIsNumber = isNaN(cidToNumber);
+
+        if(!cidIsNumber) {
+            const err = {
+                message: `El cid es un número y debe ser un randomUUID`,
+                status: 400
+            };
+            return err;
+        }
+
+        return false;
+    }
 
 }

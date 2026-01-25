@@ -8,8 +8,8 @@ const cartsRoute =  join('src', 'data', 'carts.json');
 
 export const cartsRouter = express.Router();
 
-//creates a new cart
 
+//creates a new cart
 cartsRouter.post('/', async (req, res) => {
     try {
         const cartManager = new CartsManager(cartsRoute)
@@ -22,8 +22,8 @@ cartsRouter.post('/', async (req, res) => {
     }
 })
 
-//get cart by id
 
+//get cart by id
 cartsRouter.get('/:cid', async (req, res) => {
     try {
         const {cid} = req.params; 
@@ -43,15 +43,18 @@ cartsRouter.get('/:cid', async (req, res) => {
     }
 })
 
-//add product to cart
 
-cartsRouter.post('/:cid/product/:pid', async (req, res) => {
+//add product to cart
+cartsRouter.post('/:cid/products/:pid', async (req, res) => {
     try {
         const {cid, pid} = req.params;
         const cartManager = new CartsManager(cartsRoute);
 
+        const addToCart = await cartManager.addProductToCart(cid, pid);
 
+        console.log(addToCart, 'addToCart')
 
+        res.json({...addToCart})
 
 
     } catch (error) {

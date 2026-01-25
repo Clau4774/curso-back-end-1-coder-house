@@ -1,10 +1,15 @@
 [
   {
-    "cid": "0db5d9f0-c0df-45b3-b858-833ae0dcbeff",
-    "products": []
-  },
-  {
-    "cid": "c1387fb7-ba5e-486b-aaf6-98581f44451a",
-    "products": []
+    "cid": "0effb7bc-cfc9-47e3-99b3-ae5ff925ea2c",
+    "products": [
+      {
+        "pid": "3",
+        "quantity": 4
+      },
+      {
+        "pid": "4",
+        "quantity": 6
+      }
+    ]
   }
 ]
