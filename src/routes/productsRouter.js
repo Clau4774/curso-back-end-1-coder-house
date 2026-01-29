@@ -53,9 +53,6 @@ productsRouter.post('/', async (req, res) => {
 
         res.status(201).json(createProduct);
 
-
-
-
     } catch (error) {
         console.error(error);
         res.status(error.status).json(error);
