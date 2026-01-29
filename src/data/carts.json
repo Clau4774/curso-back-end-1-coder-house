@@ -11,5 +11,18 @@
         "quantity": 6
       }
     ]
+  },
+  {
+    "cid": "40a64226-666f-4fbb-a600-f665bbfbe0db",
+    "products": [
+      {
+        "pid": "3",
+        "quantity": 2
+      },
+      {
+        "pid": "6",
+        "quantity": 4
+      }
+    ]
   }
 ]

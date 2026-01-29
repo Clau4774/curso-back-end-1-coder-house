@@ -5,28 +5,29 @@ import { engine } from 'express-handlebars';
 import { join } from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {dirname} from 'node:path';
+import { realTimeProductsRoute } from './routes/realTimeProductsRouter.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+const projectRoot = join(__dirname, '..');
 
 const app = express();
 
 const PORT = 8080;
 
-console.log(__dirname)
-
-const viewsRoute = join('')
-
-app.engine('handlebars', engine({
+app.engine('hbs', engine({
     defaultLayout: 'main',
-    layoutsDir: join(__dirname, 'views', 'layouts'),
-    partialsDir: join(__dirname, 'views', 'partials')
+    partialsDir: join(__dirname, 'views', 'partials'),
+    extname: 'hbs'
 }));
-app.set('view engine', 'handlebars');
-app.set('views', '')
+app.set('view engine', 'hbs');
+app.set('views', join(__dirname, 'views'));
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static(join(projectRoot, 'public')));
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
+app.use('/realtimeProducts', realTimeProductsRoute);
 
 
 app.listen(PORT, () => {

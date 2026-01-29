@@ -81,7 +81,6 @@ export class CartsManager {
 
     async addProductToCart(cid, pid) {
         try {
-
             const checkCartId = this.checkCartId(cid);
 
             if(checkCartId.status) {
@@ -92,8 +91,6 @@ export class CartsManager {
             const getCarts = await this.getCarts();
 
             const productInCart = getCart.products.find(product => product.pid === pid);
-
-            console.log(productInCart, 'productInCart')
 
             if(!productInCart) {
                 const updatedCart = {...getCart, products: [...getCart.products, { pid, quantity: 1 }]};

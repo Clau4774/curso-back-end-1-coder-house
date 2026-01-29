@@ -1,3 +1,12 @@
 import { Router } from "express";
-import { join } from "node:path";
+
+export const realTimeProductsRoute = Router();
+
+realTimeProductsRoute.get('/', (req, res) => {
+    const user = {
+        firstName: 'Dante',
+        lastName: "D'Angiolo"
+    }
+    res.render('index', user);
+})
 
