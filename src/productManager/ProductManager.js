@@ -229,7 +229,7 @@ export class ProductManager {
 
 
     checkProductData(product) {
-        const {title, description, code, price, status, category} = product;
+        const {title, code, price, status, category} = product;
         const errorHandler = (error) => {
             return {message: error.message, status: error.status }
         }
@@ -251,23 +251,23 @@ export class ProductManager {
 
             return errorHandler(error)
         }
-        if (description.trim() === '' ) {
-            const error = {
-                message: 'La descripción está vacía, complete esté campo',
-                status: 400
-            }
+        // if (description.trim() === '' ) {
+        //     const error = {
+        //         message: 'La descripción está vacía, complete esté campo',
+        //         status: 400
+        //     }
 
-            return errorHandler(error)
-        }
+        //     return errorHandler(error)
+        // }
 
-        if (!isNaN(Number(description))) {
-            const error = {
-                message: 'La descripción no tiene que ser solo un números',
-                status: 400
-            }
+        // if (!isNaN(Number(description))) {
+        //     const error = {
+        //         message: 'La descripción no tiene que ser solo un números',
+        //         status: 400
+        //     }
 
-            return errorHandler(error)
-        }
+        //     return errorHandler(error)
+        // }
         
         if (code.trim() === '' ) {
             const error = {
@@ -296,7 +296,9 @@ export class ProductManager {
             return errorHandler(error);
         }
 
-        if (typeof status !== 'boolean') {
+        const booleanStatus = Boolean(status)
+
+        if (typeof booleanStatus !== 'boolean') {
             const error = {
                 message: 'Debe ingresar un valor booleano',
                 status: 400
@@ -305,14 +307,14 @@ export class ProductManager {
             return errorHandler(error);
         }
 
-        if (isNaN(Number(status))) {
-            const error = {
-                message: 'Debe ingresar números en este campo',
-                status: 400
-            }
+        // if (isNaN(Number(booleanStatus))) {
+        //     const error = {
+        //         message: 'Debe ingresar números en este campo',
+        //         status: 400
+        //     }
 
-            return errorHandler(error);
-        }
+        //     return errorHandler(error);
+        // }
 
         
         if (category.trim() === '' ) {

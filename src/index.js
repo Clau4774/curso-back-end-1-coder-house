@@ -1,16 +1,26 @@
 import express from 'express';
-import {productsRouter} from './routes/productsRouter.js'
-import { cartsRouter } from './routes/cartsRouter.js';
 import { engine } from 'express-handlebars';
 import { join } from 'node:path';
-import {fileURLToPath} from 'node:url';
-import {dirname} from 'node:path';
-import { realTimeProductsRoute } from './routes/realTimeProductsRouter.js';
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
+import { createServer } from 'node:http';
+import { Server }  from 'socket.io';
+
+import { productsRouter } from './routes/productsRouter.js'
+import { cartsRouter } from './routes/cartsRouter.js';
+import { initializeSocket, realTimeProductsRoute } from './routes/realTimeProductsRouter.js';
+
+
+
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const projectRoot = join(__dirname, '..');
 
 const app = express();
+const httpServer = createServer(app);
+
+export const socketServer = new Server(httpServer);
+
 
 const PORT = 8080;
 
@@ -25,11 +35,13 @@ app.set('views', join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(join(projectRoot, 'public')));
+
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
-app.use('/realtimeProducts', realTimeProductsRoute);
+app.use('/realTimeProducts', realTimeProductsRoute);
 
+initializeSocket();
 
-app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
     console.log(`Running on PORT: ${PORT}, route: http://localhost:${PORT}`)
 })

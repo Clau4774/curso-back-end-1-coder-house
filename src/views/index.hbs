@@ -1,4 +1,4 @@
-<form action="POST" id="product-form">
+<form id="product-form">
     <h2>Agregue un producto</h2>
     <label for="productTitle">Ingrese el titulo del producto
         <input id="productTitle" type="text" placeholder="Ingrese titulo del producto">
@@ -11,6 +11,9 @@
     </label>
     <label for="productStock">Ingrese el stock del producto
         <input id="productStock" type="number" placeholder="Ingrese stock del producto">
+    </label>
+    <label for="productDescription">Ingrese descripción del producto
+        <textarea name="productDescription" id="productDescription" placeholder="Ingrese descripción del producto"></textarea>
     </label>
     <label for="productStatus">Ingrese disponibilidad del producto
         <select name="productStatus" id="productStatus">
@@ -25,9 +28,11 @@
             <option value="Hogar">Hogar</option>
         </select>
     </label>
+    <button id="submitButton">Crear producto</button>
 </form>
 <section>
     <h2>Listado de productos</h2>
+    <div id="products-container">
     {{#each productsWithFixedPrice}}
         <div>
             <h3>{{this.title}}</h3>
@@ -38,4 +43,7 @@
             <p>Status: {{this.status}}</p>
         </div>
     {{/each}}
+    </div>
 </section>
+<script src="./socket.io/socket.io.js"></script>
+<script src="/js/main.js"></script>
