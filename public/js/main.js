@@ -108,33 +108,51 @@ function checkFormValues(formValues) {
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    try {
 
-    const productTitle = e.target.productTitle.value;
-    const productCode = e.target.productCode.value;
-    const productPrice = e.target.productPrice.value;
-    const productStock = e.target.productStock.value;
-    const productStatus = e.target.productStatus.value;
-    const productCategory = e.target.productCategory.value;
-    const productDescription = e.target.productDescription.value;
+        const productTitle = e.target.productTitle.value;
+        const productCode = e.target.productCode.value;
+        const productPrice = e.target.productPrice.value;
+        const productStock = e.target.productStock.value;
+        const productStatus = e.target.productStatus.value;
+        const productCategory = e.target.productCategory.value;
+        const productDescription = e.target.productDescription.value;
 
-    const newProduct = {
-        title: productTitle,
-        code: productCode,
-        price: productPrice,
-        status: productStatus,
-        category: productCategory,
-        stock: productStock,
-        description: productDescription
+        const newProduct = {
+            title: productTitle,
+            code: productCode,
+            price: productPrice,
+            status: productStatus,
+            category: productCategory,
+            stock: productStock,
+            description: productDescription
+        }
+
+        const dataHasError = checkFormValues(newProduct);
+
+        if(dataHasError !== null) {
+            console.warn(dataHasError)
+            return null
+        }
+
+        const productWithNumericValues = {...newProduct, price: Number(newProduct.price), stock: Number(newProduct.stock)}
+
+        
+
+        const createProduct = await fetch('http://localhost:8080/api/products', {
+            method: 'POST',
+            headers: {
+                "Content-Type" : 'application/json',
+            },
+            body: JSON.stringify(productWithNumericValues, null, 2)
+        })
+
+        console.log(createProduct);
+
+        e.target.reset();
+        
+    } catch (error) {
+        console.error(error);
     }
-
-    const dataHasError = checkFormValues(newProduct);
-
-    if(dataHasError !== null) {
-        console.warn(dataHasError)
-        return null
-    }
-
     
-
-    e.target.reset();
 })

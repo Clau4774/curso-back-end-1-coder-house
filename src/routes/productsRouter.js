@@ -45,8 +45,6 @@ productsRouter.post('/', async (req, res) => {
 
         const createProduct = await productManager.addProduct(productData);
 
-        console.log(createProduct,'createProduct')
-
         if(createProduct.status === 400) {
             throw createProduct;
         }
