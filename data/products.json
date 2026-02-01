@@ -1,126 +1,5 @@
 [
  {
-  "id": 3,
-  "title": "Mouse Gamer Ergonómico",
-  "description": "Mouse con sensor óptico de 16000 DPI y 6 botones programables.",
-  "code": "MOU-003",
-  "price": 32,
-  "status": true,
-  "stock": 40,
-  "category": "Periféricos",
-  "thumbnails": ""
- },
- {
-  "id": 4,
-  "title": "Monitor 27\" 4K",
-  "description": "Monitor Ultra HD con panel IPS y tasa de refresco de 144Hz.",
-  "code": "MON-004",
-  "price": 299.99,
-  "status": true,
-  "stock": 8,
-  "category": "Monitores",
-  "thumbnails": ""
- },
- {
-  "id": 5,
-  "title": "Smartwatch Serie 5",
-  "description": "Reloj inteligente con GPS, sensor de ritmo cardíaco y sumergible.",
-  "code": "SWA-005",
-  "price": 120,
-  "status": true,
-  "stock": 12,
-  "category": "Wearables",
-  "thumbnails": ""
- },
- {
-  "id": 6,
-  "title": "Cámara Web Full HD",
-  "description": "Webcam 1080p con micrófono integrado y corrección de luz automática.",
-  "code": "CAM-006",
-  "price": 45,
-  "status": true,
-  "stock": 20,
-  "category": "Accesorios",
-  "thumbnails": ""
- },
- {
-  "id": 7,
-  "title": "SSD Externo 1TB",
-  "description": "Unidad de estado sólido portátil de alta velocidad con conexión USB-C.",
-  "code": "STO-007",
-  "price": 110,
-  "status": true,
-  "stock": 30,
-  "category": "Almacenamiento",
-  "thumbnails": ""
- },
- {
-  "id": 8,
-  "title": "Lámpara de Escritorio LED",
-  "description": "Lámpara con control táctil, varios niveles de brillo y carga inalámbrica.",
-  "code": "LAM-008",
-  "price": 28.5,
-  "status": false,
-  "stock": 0,
-  "category": "Hogar",
-  "thumbnails": ""
- },
- {
-  "id": 9,
-  "title": "Soporte para Laptop",
-  "description": "Soporte de aluminio ajustable y plegable para mejorar la ergonomía.",
-  "code": "SOP-009",
-  "price": 19.99,
-  "status": true,
-  "stock": 50,
-  "category": "Accesorios",
-  "thumbnails": ""
- },
- {
-  "id": 10,
-  "title": "Hub USB-C 7 en 1",
-  "description": "Adaptador con HDMI, puertos USB 3.0 y lector de tarjetas SD.",
-  "code": "HUB-010",
-  "price": 35,
-  "status": true,
-  "stock": 18,
-  "category": "Accesorios",
-  "thumbnails": ""
- },
- {
-  "title": "Primer objeto de prueba",
-  "description": "Descripcíón de prueba",
-  "code": "EEA-234",
-  "price": 99.99,
-  "status": true,
-  "stock": 42,
-  "category": "categoria de prueba",
-  "thumbnails": "",
-  "id": "e820bbb0-468c-4a90-a379-13221fdc38c6"
- },
- {
-  "title": "Segunda Prueba",
-  "description": "Descripcíón de prueba 2",
-  "code": "JEJ-567",
-  "price": 55,
-  "status": true,
-  "stock": 22,
-  "category": "Una prueba más",
-  "thumbnails": "",
-  "id": "4a95bdc3-72ba-4011-b8dd-0d58eceba0c1"
- },
- {
-  "title": "Tercer Prueba",
-  "description": "Descripcíón de prueba 3",
-  "code": "ASDJASOIJDSAOIDJ-QIOJEOI",
-  "price": 55,
-  "status": true,
-  "stock": 5667,
-  "category": "ASDSADASDASDAS",
-  "thumbnails": "",
-  "id": "ccee8548-616a-4bf8-b4b9-be596dd0ea6f"
- },
- {
   "title": "Computadora de escritorio",
   "code": "COD-123",
   "price": 123456,
@@ -169,5 +48,65 @@
   "stock": 15,
   "description": "Un jarro hervidor de acero inoxidable",
   "id": "b4a0d44c-43fd-455d-a0ca-991871e7a9a1"
+ },
+ {
+  "title": "Heladera",
+  "code": "COD-2222",
+  "price": 2000000,
+  "status": "true",
+  "category": "Electrodomésticos",
+  "stock": 30,
+  "description": "Heladera no-frost",
+  "id": "79bdd862-58e4-4a86-ba9e-cd1a79c35e59"
+ },
+ {
+  "title": "Reloj de pared",
+  "code": "COD-8558",
+  "price": 5000,
+  "status": "true",
+  "category": "Electrodomésticos",
+  "stock": 15,
+  "description": "Reloj de pared a pilas",
+  "id": "01408130-29b3-4687-ad23-43d21f7a2726"
+ },
+ {
+  "title": "Cartuchera",
+  "code": "COD-12345676",
+  "price": 2000,
+  "status": "true",
+  "category": "Hogar",
+  "stock": 500,
+  "description": "Cartuchera de uso escolar",
+  "id": "62646d28-3666-4bf7-b7b4-3d06630e8f50"
+ },
+ {
+  "title": "Lápiz",
+  "code": "COD-3211",
+  "price": 500,
+  "status": "true",
+  "category": "Hogar",
+  "stock": 5000,
+  "description": "Lápiz de grafito HB °2",
+  "id": "e6f9c061-15b3-49ef-aa56-f7039ac9f434"
+ },
+ {
+  "title": "Marcador",
+  "code": "COD-2557",
+  "price": 1000,
+  "status": "true",
+  "category": "Hogar",
+  "stock": 250,
+  "description": "Marcador al agua de distintos colores",
+  "id": "8f881554-42b3-45f1-b18b-4dc872fa4f42"
+ },
+ {
+  "title": "Lapicera",
+  "code": "COD-3225",
+  "price": 500,
+  "status": "true",
+  "category": "Hogar",
+  "stock": 35,
+  "description": "Lapicera negra",
+  "id": "97645482-e347-4ce5-af20-1b6bdce3b7f4"
  }
 ]

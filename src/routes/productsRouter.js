@@ -2,6 +2,7 @@ import Router from 'express';
 import { ProductManager } from '../productManager/ProductManager.js';
 import { join } from 'node:path';
 import { __dirname } from '../dirname/dirname.js';
+import { socketServer } from '../index.js';
 
 const productRoute = join(__dirname, '..', 'data', 'products.json');
 
@@ -45,9 +46,11 @@ productsRouter.post('/', async (req, res) => {
 
         const createProduct = await productManager.addProduct(productData);
 
-        if(createProduct.status === 400) {
-            throw createProduct;
-        }
+        // if(createProduct.status === 400) {
+        //     throw createProduct;
+        // }
+
+        socketServer.emit('product', {type: 'newProduct', product: {...createProduct}});
 
         res.status(201).json(createProduct);
 

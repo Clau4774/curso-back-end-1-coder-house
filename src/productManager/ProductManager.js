@@ -41,7 +41,7 @@ export class ProductManager {
                 product: createProductWithId
             };
 
-            return successMessage;
+            return createProductWithId;
 
 
         } catch (error) {

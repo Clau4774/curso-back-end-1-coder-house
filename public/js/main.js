@@ -1,8 +1,5 @@
-
-const socket = io();
-
 const form = document.querySelector('#product-form');
-const productContainer = document.querySelector('#products-container');
+export const productContainer = document.querySelector('#products-container');
 
 productContainer.addEventListener('click', e => {
     const deleteButton = e.target.dataset.productId !== undefined;
