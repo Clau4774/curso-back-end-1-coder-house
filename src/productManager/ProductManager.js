@@ -30,7 +30,7 @@ export class ProductManager {
 
             const productListUpdated = [...productsList, createProductWithId];
 
-            const productListStringified = JSON.stringify(productListUpdated, null ,1);
+            const productListStringified = JSON.stringify(productListUpdated, null ,2);
 
             const writingFile = await fs.writeFile(this.productsRoute, productListStringified, 'utf-8');
 
@@ -161,7 +161,7 @@ export class ProductManager {
                 return productToUpdate;
             });
 
-            const stringifiedProductsList = JSON.stringify(updatedProductsLists, null, 1)
+            const stringifiedProductsList = JSON.stringify(updatedProductsLists, null, 2)
 
             await fs.writeFile(this.productsRoute, stringifiedProductsList);
 
@@ -209,7 +209,7 @@ export class ProductManager {
 
             const deleteProduct = productsList.filter(product => product.id != pid);
 
-            const stringifiedProductsList = JSON.stringify(deleteProduct, null, 1);
+            const stringifiedProductsList = JSON.stringify(deleteProduct, null, 2);
 
             await fs.writeFile(this.productsRoute, stringifiedProductsList, 'utf8');
 

@@ -1,112 +1,12 @@
 [
- {
-  "title": "Computadora de escritorio",
-  "code": "COD-123",
-  "price": 123456,
-  "status": "true",
-  "category": "Electrodomésticos",
-  "stock": 123,
-  "description": "Computadora",
-  "id": "7206282a-c09f-4b07-ad4e-1258c0b54da2"
- },
- {
-  "title": "Silla para jardín",
-  "code": "COD-4562",
-  "price": 100000,
-  "status": "true",
-  "category": "Jardin",
-  "stock": 20,
-  "description": "Silla de jardín",
-  "id": "f3040c94-fe9f-4725-8283-9c6c607f16d7"
- },
- {
-  "title": "Sartén",
-  "code": "COD-111",
-  "price": 30000,
-  "status": "true",
-  "category": "Hogar",
-  "stock": 20,
-  "description": "Sartén anti aderente",
-  "id": "b84440af-7669-4e9c-85f6-68051b085abf"
- },
- {
-  "title": "olla",
-  "code": "COD-2345",
-  "price": 30000,
-  "status": "true",
-  "category": "Hogar",
-  "stock": 100,
-  "description": "Olla a preción",
-  "id": "ab878d6a-d73e-4847-ac77-466831677c0a"
- },
- {
-  "title": "Jarro hervidor",
-  "code": "COD-0987",
-  "price": 10000,
-  "status": "true",
-  "category": "Hogar",
-  "stock": 15,
-  "description": "Un jarro hervidor de acero inoxidable",
-  "id": "b4a0d44c-43fd-455d-a0ca-991871e7a9a1"
- },
- {
-  "title": "Heladera",
-  "code": "COD-2222",
-  "price": 2000000,
-  "status": "true",
-  "category": "Electrodomésticos",
-  "stock": 30,
-  "description": "Heladera no-frost",
-  "id": "79bdd862-58e4-4a86-ba9e-cd1a79c35e59"
- },
- {
-  "title": "Reloj de pared",
-  "code": "COD-8558",
-  "price": 5000,
-  "status": "true",
-  "category": "Electrodomésticos",
-  "stock": 15,
-  "description": "Reloj de pared a pilas",
-  "id": "01408130-29b3-4687-ad23-43d21f7a2726"
- },
- {
-  "title": "Cartuchera",
-  "code": "COD-12345676",
-  "price": 2000,
-  "status": "true",
-  "category": "Hogar",
-  "stock": 500,
-  "description": "Cartuchera de uso escolar",
-  "id": "62646d28-3666-4bf7-b7b4-3d06630e8f50"
- },
- {
-  "title": "Lápiz",
-  "code": "COD-3211",
-  "price": 500,
-  "status": "true",
-  "category": "Hogar",
-  "stock": 5000,
-  "description": "Lápiz de grafito HB °2",
-  "id": "e6f9c061-15b3-49ef-aa56-f7039ac9f434"
- },
- {
-  "title": "Marcador",
-  "code": "COD-2557",
-  "price": 1000,
-  "status": "true",
-  "category": "Hogar",
-  "stock": 250,
-  "description": "Marcador al agua de distintos colores",
-  "id": "8f881554-42b3-45f1-b18b-4dc872fa4f42"
- },
- {
-  "title": "Lapicera",
-  "code": "COD-3225",
-  "price": 500,
-  "status": "true",
-  "category": "Hogar",
-  "stock": 35,
-  "description": "Lapicera negra",
-  "id": "97645482-e347-4ce5-af20-1b6bdce3b7f4"
- }
+  {
+    "title": "Horno microondas",
+    "code": "COD-1111",
+    "price": 25000000,
+    "status": "true",
+    "category": "Electrodomésticos",
+    "stock": 40,
+    "description": "Horno microondas de muy buen rendimiento",
+    "id": "4d8fabee-5027-48e3-bdd8-a744959dcf82"
+  }
 ]

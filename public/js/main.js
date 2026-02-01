@@ -1,12 +1,24 @@
 const form = document.querySelector('#product-form');
 export const productContainer = document.querySelector('#products-container');
 
-productContainer.addEventListener('click', e => {
+productContainer.addEventListener('click', async e => {
     const deleteButton = e.target.dataset.productId !== undefined;
 
     if(deleteButton) {
-        const parentNode = e.target.parentNode;
-        parentNode.remove();
+        try { 
+            const parentNode = e.target.parentNode;
+            const productId = e.target.dataset.productId;
+
+            const deleteProduct = await fetch(`http://localhost:8080/api/products/${productId}`, {
+                method: 'DELETE',
+            })
+
+            console.log(deleteProduct);
+            
+            parentNode.remove();   
+        } catch (error) {
+            console.log(error);
+        }
     }
 })
 
