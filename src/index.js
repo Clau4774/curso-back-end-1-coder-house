@@ -1,19 +1,13 @@
 import express from 'express';
 import { engine } from 'express-handlebars';
 import { join } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { dirname } from 'node:path';
 import { createServer } from 'node:http';
 import { Server }  from 'socket.io';
-
 import { productsRouter } from './routes/productsRouter.js'
 import { cartsRouter } from './routes/cartsRouter.js';
 import { initializeSocket, realTimeProductsRoute } from './routes/realTimeProductsRouter.js';
+import { __dirname } from './dirname/dirname.js';
 
-
-
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
 const projectRoot = join(__dirname, '..');
 
 const app = express();

@@ -10,7 +10,6 @@ productsRouter.get('/', async (__, res) => {
     try {
         const productManager = new ProductManager(productRoute)
         const data = await productManager.getProducts();
-        console.log(typeof true, 'typeof true')
         res.json(data);
 
     } catch (error) {

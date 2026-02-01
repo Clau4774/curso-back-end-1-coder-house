@@ -2,10 +2,10 @@ import { Router } from "express";
 import { join } from 'node:path';
 import { ProductManager } from "../productManager/ProductManager.js";
 import { socketServer } from "../index.js";
+import { __dirname } from "../dirname/dirname.js";
 
 
 export const realTimeProductsRoute = Router();
-const productsRoute = join('src', 'data', 'products.json');
 
 realTimeProductsRoute.get('/', async (req, res) => {
     try {
