@@ -1,8 +1,9 @@
 import Router from 'express';
 import { ProductManager } from '../productManager/ProductManager.js';
 import { join } from 'node:path';
+import { __dirname } from '../dirname/dirname.js';
 
-const productRoute = join('src', 'data', 'products.json');
+const productRoute = join(__dirname, '..', 'data', 'products.json');
 
 export const productsRouter = Router();
 

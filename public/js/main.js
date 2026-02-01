@@ -4,6 +4,107 @@ const socket = io();
 const form = document.querySelector('#product-form');
 const productContainer = document.querySelector('#products-container');
 
+productContainer.addEventListener('click', e => {
+    const deleteButton = e.target.dataset.productId !== undefined;
+
+    if(deleteButton) {
+        const parentNode = e.target.parentNode;
+        parentNode.remove();
+    }
+})
+
+function checkFormValues(formValues) {
+    
+    const handleError = (error) => {
+        return {
+            message: error.message,
+            status: error.status
+        }
+    }
+    
+    const {title, code, price, status, category, stock, description} = formValues;
+
+    if(!title.trim()) {
+        const error = {
+            message: 'Debe ingresar un título',
+            status: 400
+        }
+        return handleError(error);
+    }
+    
+    if(!code.trim()) {
+        const error = {
+            message: 'Debe ingresar un código',
+            status: 400
+        }
+        return handleError(error);
+    }
+
+    if(!price.trim()) {
+        const error = {
+            message: 'Debe ingresar un valor en el campo price',
+            status: 400
+        }
+        return handleError(error);
+    }
+
+    const priceIsNan = isNaN(Number(price));
+
+    if(priceIsNan) {
+        const error = {
+            message: 'El precio tiene que ser un número',
+            status: 400
+        }
+        return handleError(error);
+    }
+
+    const statusIsBoolean = Boolean(status);
+
+    if(typeof statusIsBoolean !== 'boolean') {
+        const error = {
+            message: 'Debe ingresar un valor booleano',
+            status: 400
+        }
+        return handleError(error);
+    }
+
+    if(!category.trim()) {
+        const error = {
+            message: 'Debe ingresar una categoría',
+            status: 400
+        }
+        return handleError(error);
+    }
+
+    if(!stock.trim()) {
+        const error = {
+            message: 'Debe completar el campo stock',
+            status: 400
+        }
+        return handleError(error);
+    }
+
+    const stockIsNan = isNaN(Number(stock));
+
+    if(stockIsNan) {
+        const error = {
+            message: 'Debe ingresar un valor numérico en este campo',
+            status: 400
+        }
+        return handleError(error);
+    }
+
+    if(!description.trim()) {
+        const error = {
+            message: 'Debe ingresar una descripción del producto',
+            status: 400
+        }
+        return handleError(error);
+    }
+
+    return null;
+}
+
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -14,6 +115,7 @@ form.addEventListener('submit', async (e) => {
     const productStock = e.target.productStock.value;
     const productStatus = e.target.productStatus.value;
     const productCategory = e.target.productCategory.value;
+    const productDescription = e.target.productDescription.value;
 
     const newProduct = {
         title: productTitle,
@@ -21,8 +123,18 @@ form.addEventListener('submit', async (e) => {
         price: productPrice,
         status: productStatus,
         category: productCategory,
-        stock: productStock
+        stock: productStock,
+        description: productDescription
+    }
+
+    const dataHasError = checkFormValues(newProduct);
+
+    if(dataHasError !== null) {
+        console.warn(dataHasError)
+        return null
     }
 
     
+
+    e.target.reset();
 })

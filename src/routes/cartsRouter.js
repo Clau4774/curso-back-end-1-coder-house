@@ -1,9 +1,10 @@
 import express from 'express';
 import { CartsManager } from '../cartsManager/CartsManager.js';
 import { join } from 'node:path';
+import { __dirname } from '../dirname/dirname.js';
 
 
-const cartsRoute =  join('src', 'data', 'carts.json');
+const cartsRoute =  join(__dirname, '..', 'data', 'carts.json');
 
 
 export const cartsRouter = express.Router();

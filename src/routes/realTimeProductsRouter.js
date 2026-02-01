@@ -6,6 +6,7 @@ import { __dirname } from "../dirname/dirname.js";
 
 
 export const realTimeProductsRoute = Router();
+const productsRoute = join(__dirname, '..' ,'data', 'products.json')
 
 realTimeProductsRoute.get('/', async (req, res) => {
     try {

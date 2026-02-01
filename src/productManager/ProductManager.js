@@ -229,7 +229,7 @@ export class ProductManager {
 
 
     checkProductData(product) {
-        const {title, code, price, status, category} = product;
+        const {title, code, price, status, category, description} = product;
         const errorHandler = (error) => {
             return {message: error.message, status: error.status }
         }
@@ -329,6 +329,15 @@ export class ProductManager {
         if (!isNaN(Number(category))) {
             const error = {
                 message: 'No debe ingresar solo números en este campo',
+                status: 400
+            }
+
+            return errorHandler(error);
+        }
+
+        if(!description.trim()) {
+            const error = {
+                message: 'Debe agregar una descripción al producto',
                 status: 400
             }
 
