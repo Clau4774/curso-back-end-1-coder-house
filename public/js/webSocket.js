@@ -7,12 +7,14 @@ socket.on('product', data => {
     if(data.type === 'newProduct') {
 
         const {title, description, price, stock, code, status, id} = data.product;
+
+        const priceWithFormat = price.toFixed(2);
         
         const newProduct = `
-        <div>
+        <div class="product-card">
             <h3>${title}</h3>
             <p>${description}</p>
-            <p>Precio: $${price}</p>
+            <p>Precio: $${priceWithFormat}</p).toFixed(2)>
             <p>Stock: ${stock}</p>
             <p>Code: ${code}</p>
             <p>Status: ${status}</p>

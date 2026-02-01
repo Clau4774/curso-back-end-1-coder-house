@@ -8,5 +8,45 @@
     "stock": 40,
     "description": "Horno microondas de muy buen rendimiento",
     "id": "4d8fabee-5027-48e3-bdd8-a744959dcf82"
+  },
+  {
+    "title": "Horno microondas",
+    "code": "COD-2332",
+    "price": 123456,
+    "status": "true",
+    "category": "Electrodomésticos",
+    "stock": 24,
+    "description": "asdasd",
+    "id": "43f7bce0-6f46-414f-9d03-44f325ab40ee"
+  },
+  {
+    "title": "Plancha",
+    "code": "COD-4774",
+    "price": 1777777,
+    "status": "true",
+    "category": "Electrodomésticos",
+    "stock": 35,
+    "description": "sdfsdf",
+    "id": "cd9172ae-d0ac-493c-b9fb-f6ac3b5b0ca0"
+  },
+  {
+    "title": "Anafe eléctrico",
+    "code": "COD-3567",
+    "price": 25000000,
+    "status": "true",
+    "category": "Electrodomésticos",
+    "stock": 30,
+    "description": "Anafe eléctrico con muy buen ahorro de energía",
+    "id": "2f1e731e-c80b-4e3b-a4f5-92636f48a88a"
+  },
+  {
+    "title": "Lavarropas",
+    "code": "COD-5678",
+    "price": 5000000,
+    "status": "true",
+    "category": "Electrodomésticos",
+    "stock": 15,
+    "description": "Lavarropas con multiples programas",
+    "id": "888a2ca1-8440-41bf-8db5-9ae271a364c8"
   }
 ]
