@@ -7,6 +7,7 @@ import { productsRouter } from './routes/productsRouter.js'
 import { cartsRouter } from './routes/cartsRouter.js';
 import { initializeSocket, realTimeProductsRoute } from './routes/realTimeProductsRouter.js';
 import { __dirname } from './dirname/dirname.js';
+import { doConnection } from './mongodb/doConnection.js';
 
 const projectRoot = join(__dirname, '..');
 
@@ -30,11 +31,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(join(projectRoot, 'public')));
 
+doConnection();
+
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/realTimeProducts', realTimeProductsRoute);
 
 initializeSocket();
+
+    
 
 httpServer.listen(PORT, () => {
     console.log(`Running on PORT: ${PORT}, route: http://localhost:${PORT}`)
