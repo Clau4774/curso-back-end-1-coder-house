@@ -40,6 +40,8 @@ productsRouter.post('/', async (req, res) => {
 
         const createProduct = await productManager.addProduct(productData);
 
+        console.log(createProduct, 'createProduct')
+
         socketServer.emit('product', {type: 'newProduct', product: {...createProduct}});
 
         res.status(201).json(createProduct);

@@ -12,6 +12,8 @@ export class ProductManager {
 
             const addOneProduct = await ProductModel.insertOne(product);
 
+            console.log(addOneProduct, 'addOneProduct')
+
             return addOneProduct;
 
 
@@ -161,31 +163,24 @@ export class ProductManager {
                 throw err;
             }
 
-            const productsList = await this.getProducts();
-            const findProduct = await this.getProduct(pid);
+            // if(!findProduct) {
+            //     const err = {
+            //         message: `No se ha encontrado producto con id: ${pid}`,
+            //         status: 404
+            //     }
 
-            if(!findProduct) {
-                const err = {
-                    message: `No se ha encontrado producto con id: ${pid}`,
-                    status: 404
-                }
+            //     throw err;
+            // }
 
-                throw err;
-            }
+            const deleteProduct = await ProductModel.deleteOne({_id: pid});
 
-            const deleteProduct = productsList.filter(product => product.id != pid);
+            // const operationSuccess = {
+            //     message: `Producto con id: ${pid} eliminado con éxito`,
+            //     status: 200,
+            //     deletedProduct: findProduct
+            // }
 
-            const stringifiedProductsList = JSON.stringify(deleteProduct, null, 2);
-
-            await fs.writeFile(this.productsRoute, stringifiedProductsList, 'utf8');
-
-            const operationSuccess = {
-                message: `Producto con id: ${pid} eliminado con éxito`,
-                status: 200,
-                deletedProduct: findProduct
-            }
-
-            return operationSuccess;
+            return deleteProduct;
 
         } catch (error) {
             console.error(error);
