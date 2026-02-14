@@ -10,15 +10,21 @@ const productsRoute = join(__dirname, '..' ,'data', 'products.json')
 
 realTimeProductsRoute.get('/', async (req, res) => {
     try {
-        const productManager = new ProductManager(productsRoute);
+        const productManager = new ProductManager();
             const products = await productManager.getProducts();
-            const productsWithFixedPrice = products.map(product => ({
+            const productsWithFixedPrice = products.payload.map(product => {
+                console.log(product._id.toString(), 'dentro de fixed')
+                return ({
                 ...product,
+                _id: product._id.toString(),
                 price: product.price.toFixed(2)
-            }));
+            })
+        });
+
+        //console.log(productsWithFixedPrice, 'productsWithFixedPrice')
         res.render('index', {productsWithFixedPrice});
     } catch (error) {
-        
+        console.error(error)
     }
 })
 
@@ -27,10 +33,11 @@ export function initializeSocket() {
         console.log(`Cliente conectado: ${socket.id}`);
     
         socket.on('requestProducts', async () => {
-            const productManager = new ProductManager(productsRoute);
+            const productManager = new ProductManager();
             const products = await productManager.getProducts();
-            const productsWithFixedPrice = products.map(product => ({
+            const productsWithFixedPrice = products.payload.map(product => ({
                 ...product,
+                _id: product._id.toString(),
                 price: product.price.toFixed(2)
             }));
     

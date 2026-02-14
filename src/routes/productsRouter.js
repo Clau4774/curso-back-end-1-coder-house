@@ -1,40 +1,34 @@
 import Router from 'express';
 import { ProductManager } from '../productManager/ProductManager.js';
-import { join } from 'node:path';
-import { __dirname } from '../dirname/dirname.js';
 import { socketServer } from '../index.js';
-
-const productRoute = join(__dirname, '..', 'data', 'products.json');
+import { sendResponse } from '../utils/sendResponse.js';
 
 export const productsRouter = Router();
 
+
+
 productsRouter.get('/', async (__, res) => {
     try {
-        const productManager = new ProductManager(productRoute)
+        const productManager = new ProductManager()
         const data = await productManager.getProducts();
-        res.json(data);
+        sendResponse(data, res);
 
     } catch (error) {
-        console.error(error)
+        sendResponse(error, res);
     }
 })
 
 productsRouter.get('/:pid', async (req, res) => {
     try {
         const {pid} = req.params; 
-        const productManager = new ProductManager(productRoute)
+        const productManager = new ProductManager()
         const data = await productManager.getProduct(pid);
         
-        if(data.code === 400 || data.code === 404) {
-            throw data;
-        } 
-        res.json(data);
+        sendResponse(data, res);
 
     } catch (error) {
         console.error(error);
-        res.status(error.code).json(error);
-        
-        
+        sendResponse(error, res)
     }
 })
 
@@ -42,13 +36,9 @@ productsRouter.post('/', async (req, res) => {
     try {
         const productData = req.body;
         
-        const productManager = new ProductManager(productRoute);
+        const productManager = new ProductManager();
 
         const createProduct = await productManager.addProduct(productData);
-
-        // if(createProduct.status === 400) {
-        //     throw createProduct;
-        // }
 
         socketServer.emit('product', {type: 'newProduct', product: {...createProduct}});
 
@@ -74,7 +64,7 @@ productsRouter.put('/:pid', async (req, res) => {
         }
 
 
-        const productManager = new ProductManager(productRoute);
+        const productManager = new ProductManager();
 
         const updateProduct = await productManager.updateProduct(updatedProduct);
 
@@ -97,7 +87,7 @@ productsRouter.delete('/:pid', async (req, res) => {
         if(pid.trim() === undefined) {
             res.status(400).json({message: `El id no fue enviado`, status:400});
         };
-        const productManager = new ProductManager(productRoute);
+        const productManager = new ProductManager();
 
         const updateProduct = await productManager.deleteProduct(pid);
 

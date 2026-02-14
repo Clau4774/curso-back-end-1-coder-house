@@ -22,9 +22,10 @@ const productSchema = new Schema(
         },
         code: {
             type: String,
-            required: true
+            required: true,
+            unique: true
         },
-        thumbnail: String,
+        thumbnails: String,
         stock: {
             type: Number,
             required: true

@@ -35,13 +35,13 @@
     <div id="products-container">
     {{#each productsWithFixedPrice}}
         <div class="product-card">
-            <h3>{{this.title}}</h3>
-            <p>{{this.description}}</p>
-            <p>Precio: ${{this.price}}</p>
-            <p>Stock: {{this.stock}}</p>
-            <p>Code: {{this.code}}</p>
-            <p>Status: {{this.status}}</p>
-            <button data-product-id="{{this.id}}">Borrar</button>
+            <h3>{{this._doc.title}}</h3>
+            <p>{{this._doc.description}}</p>
+            <p>Precio: ${{this._doc.price}}</p>
+            <p>Stock: {{this._doc.stock}}</p>
+            <p>Code: {{this._doc.code}}</p>
+            <p>Status: {{this._doc.status}}</p>
+            <button data-product-id="{{this._doc._id}}">Borrar</button>
         </div>
     {{/each}}
     </div>

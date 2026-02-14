@@ -8,6 +8,7 @@ productContainer.addEventListener('click', async e => {
         try { 
             const parentNode = e.target.parentNode;
             const productId = e.target.dataset.productId;
+            console.log(productId)
 
             const deleteProduct = await fetch(`http://localhost:8080/api/products/${productId}`, {
                 method: 'DELETE',

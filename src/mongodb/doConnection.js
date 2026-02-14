@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 
-export const doConnection = async () => {
+export const doConnection = async (connection) => {
     try {
-        const doConnection = await mongoose.connect('mongodb+srv://clau4774:coder123@backend1-coderhouse.85jhfhr.mongodb.net/?appName=backEnd1-CoderHouse');
+        const doConnection = await mongoose.connect(connection);
         
         console.log('Conectado a mongoDB de manera exitosa.')
         

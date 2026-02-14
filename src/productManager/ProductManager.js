@@ -1,47 +1,18 @@
 import fs from 'node:fs/promises';
+import { ProductModel } from '../mongodb/models/product.model.js'
 
 export class ProductManager {
-    constructor(productsRoute) {
-        this.productsRoute = productsRoute;
-    };
+    constructor() {};
 
     async addProduct(product) {
         try {
-
-            console.log(product, 'product addProduct')
             const productDataOk = this.checkProductData(product);
 
             if(productDataOk?.message || productDataOk?.status) throw productDataOk;
 
-            const productsList = await this.getProducts();
+            const addOneProduct = await ProductModel.insertOne(product);
 
-            const findProduct = productsList.find(productInList => productInList.code === product.code);
-
-            if(findProduct) {
-                const err = {
-                    message: `Ya hay un producto cargado con el código ${product.code}`,
-                    status: 400
-                }
-
-                throw err;
-            }
-
-            const createProductWithId = {...product, id: crypto.randomUUID()};
-
-            const productListUpdated = [...productsList, createProductWithId];
-
-            const productListStringified = JSON.stringify(productListUpdated, null ,2);
-
-            const writingFile = await fs.writeFile(this.productsRoute, productListStringified, 'utf-8');
-
-            console.log(writingFile, 'writingFile');
-
-            const successMessage = {
-                message: `producto con código ${product.code} creado satisfactoriamente.`, status: 201,
-                product: createProductWithId
-            };
-
-            return createProductWithId;
+            return addOneProduct;
 
 
         } catch (error) {
@@ -53,69 +24,64 @@ export class ProductManager {
 
     async getProducts() {
         try {
-            const request = await fs.readFile(this.productsRoute, 'utf-8');
 
-            if (request === undefined) {
-                const err = {
-                    message: 'El archivo no ha sido creado aún',
-                    status: 404
-                }
-                throw err;
+            const allProducts = await ProductModel.find();
+
+            const result = {
+                status: 200,
+                payload: allProducts
             }
 
-            const productsList = JSON.parse(request);
-
-            return productsList;
+            return result;
 
         } catch (error) {
-            if(error.code === 'ENOENT') {
-                await fs.writeFile(this.productsRoute, '[]','utf-8');
-                return [];
+            const err = {
+                status: 404,
+                payload: error
             }
-            return error;
+            return err;
         }
     }
 
     async getProduct(pid) {
         try {
-
-            console.log(pid, 'pid');
-            console.log(typeof pid, 'typeof pid');
-
-            const productsList = await this.getProducts();
-
-            if(productsList.length === 0) {
-                const err = {
-                    message: `La lista de productos está vacía.`,
-                    status: 404
-                }
-                throw err;
-            }
-
-            // const id = Number(pid);
-            // const pidIsNAN = Number.isNaN(id);
-            // const pidIsNotInteger = !Number.isInteger(id); 
+            const findProduct = await ProductModel.findOne({_id: pid});
             
-            const productFound = productsList.find(product => product.id == pid);
-
-            console.log(productFound, 'productFound, getProduct')
-
-            if(!productFound){
+        
+            if(!findProduct){
                 
                 const err = {
-                    message: `No se ha encontrado el producto con id "${pid}", por favor pruebe con otro`,
+                    error: {
+                        message: `No se ha encontrado el producto con id "${pid}", por favor pruebe con otro`
+                    },
                     status: 404
                 }
                 throw err
                 
             }
-            return productFound;
+
+            return {
+                status: 200,
+                payload: findProduct
+            };
             
 
         } catch (error) {
-            //console.error(error.message);
-            console.log(error, 'error productManager')
-            return error;
+            if(error.name === 'CastError') {
+                return {
+                    status: 400,
+                    error: {
+                        message: `Id "${pid}" inválido.`
+                    }
+                }
+            }
+            return {
+                status: 500,
+                error: {
+                    message: 'Error al consultar el producto',
+                    details: error.message
+                }
+            };
             
         }
     }
