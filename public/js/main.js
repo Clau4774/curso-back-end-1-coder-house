@@ -1,14 +1,16 @@
 const form = document.querySelector('#product-form');
 export const productContainer = document.querySelector('#products-container');
+const cartQuantity = document.querySelector('#cart-quantity');
+
 
 productContainer.addEventListener('click', async e => {
     const deleteButton = e.target.dataset.productId !== undefined;
+    const addToCartButton = e.target.dataset.addToCart !== undefined;
 
     if(deleteButton) {
         try { 
             const parentNode = e.target.parentNode;
             const productId = e.target.dataset.productId;
-            console.log(productId)
 
             const deleteProduct = await fetch(`http://localhost:8080/api/products/${productId}`, {
                 method: 'DELETE',
@@ -19,6 +21,23 @@ productContainer.addEventListener('click', async e => {
             parentNode.remove();   
         } catch (error) {
             console.log(error);
+        }
+    }
+
+    if(addToCartButton) {
+        try {
+            const productId = e.target.dataset.addToCart;
+            console.log(productId)
+            const addProductToCart = await fetch(`http://localhost:8080/api/carts/699213ffb3df1732b39adc7e/products/${productId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json'
+                }
+            })
+
+            console.log(addProductToCart, 'addProductToCart');
+        } catch (error) {
+            
         }
     }
 })

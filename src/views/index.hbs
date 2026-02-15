@@ -1,3 +1,7 @@
+<aside id="cart-icon">
+    <img src="./images/carrito-de-compras.png" alt="foto de un carrito de compras">
+    <span id="cart-quantity">0</span>
+</aside>
 <form id="product-form">
     <h2>Agregue un producto</h2>
     <label for="productTitle">Ingrese el titulo del producto
@@ -41,6 +45,7 @@
             <p>Stock: {{this._doc.stock}}</p>
             <p>Code: {{this._doc.code}}</p>
             <p>Status: {{this._doc.status}}</p>
+            <button data-add-to-cart="{{this._doc._id}}">Agregar al carro</button>
             <button data-product-id="{{this._doc._id}}">Borrar</button>
         </div>
     {{/each}}

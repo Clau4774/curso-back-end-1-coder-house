@@ -1,23 +1,16 @@
 import fs from 'node:fs/promises';
+import { cartModel } from '../mongodb/models/cart.model.js';
 
 export class CartsManager {
-    constructor(cartsPath) {
-        this.cartsPath = cartsPath;
-    };
+    constructor() {};
 
     async createNewCart() {
         try {
-            const newCart = {
-                cid: crypto.randomUUID(),
-                products: []
-            }
+            const createCart = await cartModel.insertOne();
 
-            const cartsList = await this.getCarts();
-            const updatedCartsList = [...cartsList, newCart];
+            console.log(createCart, 'createCart');
 
-            await fs.writeFile(this.cartsPath, JSON.stringify(updatedCartsList, null, 2), 'utf-8');
-
-            return newCart;
+            return createCart;
             
         } catch (error) {
             return error;
@@ -26,42 +19,37 @@ export class CartsManager {
 
     async getCarts() {
         try {
-            const request = await fs.readFile(this.cartsPath, 'utf-8');
+            const carts = await cartModel.find();
 
-            if (request === undefined) {
-                const err = {
-                    message: 'El archivo no ha sido creado aún',
+            if(!carts) {
+                const error = {
+                    message: `Hubo un error`,
                     status: 404
-                }
-                throw err;
+                };
+
+                return error
             }
 
-            const cartsList = JSON.parse(request);
-
-            return cartsList;
+            return carts;
 
         } catch (error) {
-            if(error.code === 'ENOENT') {
-                await fs.writeFile(this.cartsPath, '[]','utf-8');
-                return [];
-            }
-            return error;
-        }
+           
     }
+}
 
     async getCart(cid) {
         try {
 
+            
             const checkCartId = this.checkCartId(cid);
-
+            
             if(checkCartId.status) {
                 throw checkCartId;
             }
+            const cart = await cartModel.find({_id: cid});
             
-            const cartsList = await this.getCarts();
-            const findCart = cartsList.find(cart => cart.cid === cid);
-
-            if (!findCart) {
+            
+            if (!cart) {
                 const err = {
                     message: `No pudimos encontrar el carro con cid: ${cid}, por favor pruebe con un carro existente`,
                     status: 404
@@ -69,7 +57,7 @@ export class CartsManager {
                 throw err;
             }
 
-            return findCart;
+            return cart;
             
 
         } catch (error) {
@@ -83,42 +71,37 @@ export class CartsManager {
         try {
             const checkCartId = this.checkCartId(cid);
 
+            console.log(cid, 'cid')
+
             if(checkCartId.status) {
                 throw checkCartId;
             }
             
-            const getCart = await this.getCart(cid);
-            const getCarts = await this.getCarts();
-
-            const productInCart = getCart.products.find(product => product.pid === pid);
-
-            if(!productInCart) {
-                const updatedCart = {...getCart, products: [...getCart.products, { pid, quantity: 1 }]};
-                const updatedCartsList = getCarts.map(cart => cart.cid === getCart.cid ? cart.products = updatedCart : cart);
-                
-                await fs.writeFile(this.cartsPath, JSON.stringify(updatedCartsList, null, 2));
-
-                const successMessage = {
-                    message: `Se ha actualizado el carro con cid ${cid}, y se ha agregado el producto con id ${pid}`,
-                    cart: updatedCart,
-                    status: 200
+            const addProductToCart = await cartModel.findOneAndUpdate({_id: cid, 'products.productId': pid}, {
+                $inc: {
+                'products.$.quantity': 1                
                 }
-                return successMessage;
+            });
+
+            console.log(addProductToCart, 'addProductToCart');
+
+            if(!addProductToCart) {
+                return await cartModel.findByIdAndUpdate(
+                    cid,
+                    {
+                        $push: {
+                            products: {
+                                productId: pid,
+                                quantity: 1
+                            }
+                        }
+                    }
+                )
             }
 
-            const updatedCart = {cid, products: getCart.products.map(product => product.pid === pid ? {pid, quantity: product.quantity + 1} : product)};
-            console.log(updatedCart, 'updatedCart')
-            
-            const updatedCartsList = getCarts.map(cart => cart.cid === getCart.cid ? updatedCart : cart);
-            await fs.writeFile(this.cartsPath, JSON.stringify(updatedCartsList, null, 2));
-            
-            const successMessage = {
-                    message: `Se ha actualizado el carro con cid ${cid}, y se ha agregado el producto con id ${pid}`,
-                    cart: updatedCart,
-                    status: 200
-                }
 
-                return successMessage;
+
+                return addProductToCart;
             
         } catch (error) {
             console.log(error, 'error CartManager')
@@ -141,4 +124,38 @@ export class CartsManager {
         return false;
     }
 
+    async deleteProductFromCart(cid, pid) {
+
+        try {
+            
+            const findAndDeleteProduct = await cartModel.findOneAndUpdate({_id: cid, 'products.productId': pid}, {
+                $match: [`${pid}`],
+                $unset: {
+                    'products.productsId': pid
+                }
+            });
+
+            if(!findAndDeleteProduct) {
+                const error = {
+                    message: `No se encontró el documento para eliminar con id: ${pid}`,
+                    status: 404
+                }
+
+                return error;
+            }
+
+            const result = {
+                message: `Se ha eliminado el producto con id: ${pid} con éxito.`,
+                status: 200
+            }
+
+            console.log(findAndDeleteProduct, 'findAndDeleteProduct');
+
+            return result;
+        } catch (error) {
+            console.log(error);
+            return error;
+        }
+        
+    }
 }

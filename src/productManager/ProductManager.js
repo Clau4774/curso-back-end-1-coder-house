@@ -12,8 +12,6 @@ export class ProductManager {
 
             const addOneProduct = await ProductModel.insertOne(product);
 
-            console.log(addOneProduct, 'addOneProduct')
-
             return addOneProduct;
 
 

@@ -6,7 +6,8 @@ const socket = io();
 socket.on('product', data => {
     if(data.type === 'newProduct') {
 
-        const {title, description, price, stock, code, status, id} = data.product;
+        const {title, description, price, stock, code, status, _id} = data.product._doc;
+        console.log(data)
 
         console.log(price, 'price');
         console.log(typeof price, 'typeof Price')
@@ -21,7 +22,8 @@ socket.on('product', data => {
             <p>Stock: ${stock}</p>
             <p>Code: ${code}</p>
             <p>Status: ${status}</p>
-            <button data-product-id="${id}">Borrar</button>
+            <button data-add-to-cart="${_id}">Agregar al carro</button>
+            <button data-product-id="${_id}">Borrar</button>
         </div>
         `;
 
