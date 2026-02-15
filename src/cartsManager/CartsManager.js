@@ -128,10 +128,10 @@ export class CartsManager {
 
         try {
             
-            const findAndDeleteProduct = await cartModel.findOneAndUpdate({_id: cid, 'products.productId': pid}, {
-                $match: [`${pid}`],
-                $unset: {
-                    'products.productsId': pid
+            const findAndDeleteProduct = await cartModel.findByIdAndUpdate(cid, {
+                
+                $pull: {
+                    'products': {productId: pid}
                 }
             });
 
