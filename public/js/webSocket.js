@@ -5,6 +5,7 @@ const socket = io();
 
 socket.on('product', data => {
     if(data.type === 'newProduct') {
+        console.log(data)
 
         const {title, description, price, stock, code, status, _id} = data.product._doc;
         console.log(data)

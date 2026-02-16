@@ -22,12 +22,12 @@ export class ProductManager {
 
     }
 
-    async getProducts(limit = 10, page = 1, query = null, sort = 1) {
+    async getProducts(limit, page, category, status, sort = 1) {
         try {
 
             const skip = (page - 1) * limit;
 
-            const matchStage = query ? { $match: { category: { $regex: query, $options: 'i' } } } : { $match: {} };
+            const matchStage = category ? { $match: { category: { $regex: category, $options: 'i' }, status: { $regex: status, $options: 'i'} } } : { $match: {} };
 
 
             const allProducts = await ProductModel.aggregate([
@@ -45,7 +45,7 @@ export class ProductManager {
             ]);
 
             const totalProducts = await ProductModel.countDocuments(
-            query ? { title: { $regex: query, $options: 'i' } } : {}
+            category ? { title: { $regex: category, $options: 'i' } } : {}
             );
 
             const totalPages = Math.ceil(totalProducts / limit);

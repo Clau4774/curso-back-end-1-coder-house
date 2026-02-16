@@ -109,3 +109,17 @@ cartsRouter.put('/:cid', async (req, res) => {
         sendResponse(error, res)
     }
 })
+
+cartsRouter.put('/:cid/products/:pid', async (req, res) => {
+    try {
+        const {cid, pid} = req.params;
+        const quantity = req.body.quantity || 1;
+        const cartManager = new CartsManager();
+        const updateQuantity = await cartManager.sumProductsToCart(cid, pid, quantity)
+
+        sendResponse(updateQuantity, res);
+    } catch (error) {
+        console.log(error);
+        sendResponse(error, res);
+    }
+})

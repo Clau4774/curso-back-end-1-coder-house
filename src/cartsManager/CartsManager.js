@@ -96,7 +96,7 @@ export class CartsManager {
             
             const addProductToCart = await cartModel.findOneAndUpdate({_id: cid, 'products.productId': pid}, {
                 $inc: {
-                'products.$.quantity': 1                
+                    'products.$.quantity': 1                
                 }
             });
 
@@ -131,6 +131,41 @@ export class CartsManager {
                 error: error,
                 status: 404
             };
+        }
+    }
+
+    async sumProductsToCart(cid, pid, quantity) {
+        try {
+
+            const checkCartId = this.checkCartId(cid);
+
+            if(checkCartId.status) {
+                throw checkCartId;
+            }            
+
+            const updateProductsQuantity = await cartModel.findOneAndUpdate({_id: cid, 'products.productId': pid}, {
+                $inc: {
+                    'products.$.quantity': quantity
+                }
+            })
+
+            if(!updateProductsQuantity) {
+                const err = {
+                    status: 404,
+                    message: "No se pudo actualizar el producto, hubo un error"
+                }
+
+                throw err;
+            }
+
+            return {
+                status: 200,
+                message: `Se ha actualizado el producto con id: ${pid}`
+            }
+
+        } catch (error) {
+            console.error;
+            return error;
         }
     }
 
