@@ -13,9 +13,9 @@ cartsRouter.get('/', async (req, res) => {
         const getCarts = await cartManager.getCarts();
         console.log(getCarts, 'getCarts');
 
-        res.json(getCarts);
+        sendResponse(getCarts, res);
     } catch (error) {
-        res.status(error.status).json(error);
+        sendResponse(error, res);
     }
 })
 
@@ -25,11 +25,11 @@ cartsRouter.post('/', async (req, res) => {
         const cartManager = new CartsManager()
         const newCart = await cartManager.createNewCart();
         console.log(newCart,'newCart')
-        res.status(201).json({message: `Se ha creado un carro nuevo con id: ${newCart._id.toString()}.`})
+        sendResponse(newCart, res);
 
     } catch (error) {
         console.error(error);
-        res.status(error.status).json(error);
+        sendResponse(error, res);
     }
 })
 
@@ -44,11 +44,11 @@ cartsRouter.get('/:cid', async (req, res) => {
         if(data.status === 400 || data.status === 404) {
             throw data;
         } 
-        res.json(data);
+        sendResponse(data, res)
 
     } catch (error) {
         console.error(error);
-        res.status(error.status).json(error);
+        sendResponse(error, res);
         
         
     }
@@ -65,12 +65,12 @@ cartsRouter.post('/:cid/products/:pid', async (req, res) => {
 
         console.log(addToCart, 'addToCart')
 
-        res.json({...addToCart})
+        sendResponse(addToCart, res)
 
 
     } catch (error) {
         console.error(error);
-        res.status(error.status).json(error);
+        sendResponse(error, res)
     }
 })
 
@@ -86,9 +86,26 @@ cartsRouter.delete( '/:cid/products/:pid', async (req, res) => {
             throw deleteProduct;
         }
 
-        res.status(deleteProduct.status).json(deleteProduct);
+        sendResponse(deleteProduct, res);
         
     } catch (error) {
-        res.status(error.status).json(error);
+        sendResponse(error, res);
+    }
+})
+
+cartsRouter.put('/:cid', async (req, res) => {
+    try {
+        const {cid} = req.params;
+        const cartManager = new CartsManager();
+        const emptyCart = await cartManager.deleteAllProductsFromCart(cid);
+
+        if(emptyCart.status) {
+            throw emptyCart;
+        }
+
+        sendResponse(emptyCart, res)
+    } catch (error) {
+        console.log(error);
+        sendResponse(error, res)
     }
 })

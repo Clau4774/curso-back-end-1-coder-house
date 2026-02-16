@@ -37,7 +37,7 @@ productContainer.addEventListener('click', async e => {
 
             console.log(addProductToCart, 'addProductToCart');
         } catch (error) {
-            
+            console.error(error)
         }
     }
 })

@@ -7,10 +7,16 @@ export const productsRouter = Router();
 
 
 
-productsRouter.get('/', async (__, res) => {
+productsRouter.get('/', async (req, res) => {
     try {
+
+        const limit = parseInt(req.query.limit) || 10;
+        const page = parseInt(req.query.page) || 1;
+        const query = req.query.query || null;
+        const sort = parseInt(req.query.sort) || 1;
+
         const productManager = new ProductManager()
-        const data = await productManager.getProducts();
+        const data = await productManager.getProducts(limit, page, query, sort);
         sendResponse(data, res);
 
     } catch (error) {

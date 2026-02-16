@@ -22,14 +22,43 @@ export class ProductManager {
 
     }
 
-    async getProducts() {
+    async getProducts(limit = 10, page = 1, query = null, sort = 1) {
         try {
 
-            const allProducts = await ProductModel.find();
+            const skip = (page - 1) * limit;
+
+            const matchStage = query ? { $match: { category: { $regex: query, $options: 'i' } } } : { $match: {} };
+
+
+            const allProducts = await ProductModel.aggregate([
+                matchStage,
+                {
+                    $sort: {price: sort}
+                },
+                {
+                    $skip: skip
+                },
+                {
+                    $limit: limit
+                }
+
+            ]);
+
+            const totalProducts = await ProductModel.countDocuments(
+            query ? { title: { $regex: query, $options: 'i' } } : {}
+            );
+
+            const totalPages = Math.ceil(totalProducts / limit);
 
             const result = {
                 status: 200,
-                payload: allProducts
+                payload: allProducts,
+                pagination: {
+                totalProducts,
+                totalPages,
+                currentPage: page,
+                limit
+                }
             }
 
             return result;
@@ -39,6 +68,7 @@ export class ProductManager {
                 status: 404,
                 payload: error
             }
+            console.log(error)
             return err;
         }
     }

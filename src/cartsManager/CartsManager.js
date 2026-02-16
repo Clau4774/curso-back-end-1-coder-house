@@ -10,10 +10,19 @@ export class CartsManager {
 
             console.log(createCart, 'createCart');
 
-            return createCart;
+            const result = {
+                payload: createCart,
+                status: 201
+            }
+
+            return result;
             
         } catch (error) {
-            return error;
+            const err = {
+                error: `Hubo un error en la creación del carro`,
+                status: 404
+            }
+            return err;
         }
     }
 
@@ -23,17 +32,23 @@ export class CartsManager {
 
             if(!carts) {
                 const error = {
-                    message: `Hubo un error`,
+                    error: `Hubo un error`,
                     status: 404
                 };
 
                 return error
             }
 
-            return carts;
+            return {
+                payload: carts,
+                status: 200
+            };
 
         } catch (error) {
-           
+           return {
+            error: error,
+            status: 404
+           }
     }
 }
 
@@ -57,13 +72,15 @@ export class CartsManager {
                 throw err;
             }
 
-            return cart;
+            return {
+                payload: cart,
+                status: 200
+            }
             
 
         } catch (error) {
-            console.log(error, 'error CartManager')
+            console.log(error)
             return error;
-            
         }
     }
 
@@ -83,10 +100,8 @@ export class CartsManager {
                 }
             });
 
-            console.log(addProductToCart, 'addProductToCart');
-
             if(!addProductToCart) {
-                return await cartModel.findByIdAndUpdate(
+                const addProduct = await cartModel.findByIdAndUpdate(
                     cid,
                     {
                         $push: {
@@ -97,15 +112,25 @@ export class CartsManager {
                         }
                     }
                 )
+
+                const result = {
+                    payload: addProduct,
+                    status: 201
+                }
+
+                return result;
             }
-
-
-
-                return addProductToCart;
+                return {
+                    payload: addProductToCart,
+                    status: 200
+                };
             
         } catch (error) {
             console.log(error, 'error CartManager')
-            return error;
+            return {
+                error: error,
+                status: 404
+            };
         }
     }
 
@@ -146,6 +171,7 @@ export class CartsManager {
 
             const result = {
                 message: `Se ha eliminado el producto con id: ${pid} con éxito.`,
+                payload: findAndDeleteProduct,
                 status: 200
             }
 
@@ -157,5 +183,31 @@ export class CartsManager {
             return error;
         }
         
+    }
+
+    async deleteAllProductsFromCart(cid) {
+        try {
+            const deleteProducts = await cartModel.findByIdAndUpdate(cid, {
+                $set: {products: []}
+            });
+
+            if(!deleteProducts) {
+                const err = {
+                    message: 'Algo salió mal',
+                    status: 500
+                }
+
+                throw err;
+            }
+
+            return {
+                status: 200,
+                payload: deleteProducts
+            }
+            
+        } catch (error) {
+            console.log(error);
+            return error;
+        }
     }
 }
