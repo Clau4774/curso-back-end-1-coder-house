@@ -7,7 +7,7 @@ socket.on('product', data => {
     if(data.type === 'newProduct') {
         console.log(data)
 
-        const {title, description, price, stock, code, status, _id} = data.product._doc;
+        const {title, description, price, stock, code, status, _id, category} = data.product.payload;
         console.log(data)
 
         console.log(price, 'price');
@@ -19,6 +19,7 @@ socket.on('product', data => {
         <div class="product-card">
             <h3>${title}</h3>
             <p>${description}</p>
+            <p>Categoría: ${category}</p>
             <p>Precio: $${priceWithFormat}</p>
             <p>Stock: ${stock}</p>
             <p>Code: ${code}</p>

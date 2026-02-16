@@ -12,22 +12,46 @@ export class ProductManager {
 
             const addOneProduct = await ProductModel.insertOne(product);
 
-            return addOneProduct;
+            return {
+                payload: addOneProduct,
+                status: 201
+            };
 
 
         } catch (error) {
             console.error(error);
-            return error;
+            return {
+               message: error,
+               status: 404
+            };
         }
 
     }
 
-    async getProducts(limit, page, category, status, sort = 1) {
+    async getProducts(limit, page, category = '', status = '', sort = 1) {
         try {
 
-            const skip = (page - 1) * limit;
+            const numberLimit = Number(limit)
 
-            const matchStage = category ? { $match: { category: { $regex: category, $options: 'i' }, status: { $regex: status, $options: 'i'} } } : { $match: {} };
+            const skip = (page - 1) * numberLimit;
+
+            let matchStage;
+
+            if(category && status) {
+                matchStage = { $match: { category: { $regex: category, $options: 'i' }, status: { $regex: status, $options: 'i'} } };
+            };
+
+            if(!category && status) {
+                matchStage = { $match: {  status: { $regex: status, $options: 'i'} } };
+            };
+        
+            if(category && !status) {
+                matchStage = { $match: {  category: { $regex: category, $options: 'i'} } };
+            };
+
+            if(!category && !status) {
+                matchStage = {$match: {}};
+            }
 
 
             const allProducts = await ProductModel.aggregate([
@@ -39,7 +63,7 @@ export class ProductManager {
                     $skip: skip
                 },
                 {
-                    $limit: limit
+                    $limit: numberLimit
                 }
 
             ]);
