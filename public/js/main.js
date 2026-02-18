@@ -134,7 +134,6 @@ function checkFormValues(formValues) {
     return null;
 }
 
-
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
     try {
@@ -165,8 +164,6 @@ form.addEventListener('submit', async (e) => {
         }
 
         const productWithNumericValues = {...newProduct, price: Number(newProduct.price), stock: Number(newProduct.stock)}
-
-        
 
         const createProduct = await fetch('http://localhost:8080/api/products', {
             method: 'POST',

@@ -20,4 +20,4 @@ const cartSchema = new Schema({
     ]
 })
 
-export const cartModel = new model(carts, cartSchema);
+export const cartModel = model(carts, cartSchema);

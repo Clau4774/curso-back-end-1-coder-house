@@ -84,6 +84,39 @@ export class CartsManager {
         }
     }
 
+    async getCartAndPopulate(cid) {
+        try {
+
+            const populateProducts = 'ProductModel';
+            
+            const checkCartId = this.checkCartId(cid);
+            
+            if(checkCartId.status) {
+                throw checkCartId;
+            }
+            const cart = await cartModel.findOne({_id: cid}).populate('products.productId');
+            
+            
+            if (!cart) {
+                const err = {
+                    message: `No pudimos encontrar el carro con cid: ${cid}, por favor pruebe con un carro existente`,
+                    status: 404
+                };
+                throw err;
+            }
+
+            return {
+                payload: cart,
+                status: 200
+            }
+            
+
+        } catch (error) {
+            console.log(error)
+            return error;
+        }
+    }
+
     async addProductToCart(cid, pid) {
         try {
             const checkCartId = this.checkCartId(cid);

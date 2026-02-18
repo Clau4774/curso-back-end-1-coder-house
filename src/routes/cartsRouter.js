@@ -44,6 +44,7 @@ cartsRouter.get('/:cid', async (req, res) => {
         if(data.status === 400 || data.status === 404) {
             throw data;
         } 
+        
         sendResponse(data, res)
 
     } catch (error) {

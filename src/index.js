@@ -6,6 +6,7 @@ import { Server }  from 'socket.io';
 import { productsRouter } from './routes/productsRouter.js'
 import { cartsRouter } from './routes/cartsRouter.js';
 import { initializeSocket, realTimeProductsRoute } from './routes/realTimeProductsRouter.js';
+import { cartRouter } from './routes/cartRouter.js';
 import { __dirname } from './dirname/dirname.js';
 import { doConnection } from './mongodb/doConnection.js';
 import 'dotenv/config'
@@ -39,6 +40,7 @@ doConnection(dbConnection);
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/realTimeProducts', realTimeProductsRoute);
+app.use('/cart', cartRouter);
 
 initializeSocket();
    
