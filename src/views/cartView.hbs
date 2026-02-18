@@ -2,8 +2,9 @@
    
     {{#each products}}
     <div>
-        <p>{{productId}}</p>
-        <p>{{quantity}}</p>        
+        <p>Producto: {{productId.title}}</p>
+        <p>Precio: ${{productId.price}}</p>
+        <p>Cantidad: {{quantity}}</p>        
     </div>
     {{/each}}
 </div>

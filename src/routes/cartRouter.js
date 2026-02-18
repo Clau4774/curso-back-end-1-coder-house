@@ -18,19 +18,9 @@ cartRouter.get('/:cid', async (req, res) => {
 
         const {payload} = data;
 
-        const products = payload.products;
+        const {products} = payload;
 
-        // const products = payload.products.map(elem => {
-        //    const result = {
-        //     product: elem.productId,
-        //     quantity: elem.quantity
-        //    }
-        //    //console.log({...elem.productId}, 'elem.productId')
-        //    console.log(result)
-        //    return result;
-        // });
-
-         console.log(products, 'products')
+        console.log(products, 'products')
         
 
         res.render('cartView', {products});

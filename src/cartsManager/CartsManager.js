@@ -87,15 +87,14 @@ export class CartsManager {
     async getCartAndPopulate(cid) {
         try {
 
-            const populateProducts = 'ProductModel';
+            const populateProducts = 'products.productId';
             
             const checkCartId = this.checkCartId(cid);
             
             if(checkCartId.status) {
                 throw checkCartId;
             }
-            const cart = await cartModel.findOne({_id: cid}).populate('products.productId');
-            
+            const cart = await cartModel.findOne({_id: cid}).populate(populateProducts).lean();
             
             if (!cart) {
                 const err = {
