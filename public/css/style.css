@@ -77,6 +77,26 @@ section {
     border-radius: 50%;
 }
 
+#cart-view-container {
+    margin: 1rem auto;
+    max-width: 80vw;
+    padding: 1rem;
+    border: 1px solid #333;
+    border-radius: 5px;
+    background-color: #8a8889;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    gap: 1rem;
+}
+
+.cart-product-container {
+    background-color: #ececec;
+    padding: .25rem;
+    border-radius: 5px;
+}
+
 footer {
     height: 20vh;
     background-color: #000;

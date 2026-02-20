@@ -8,7 +8,6 @@ export const cartRouter = Router();
 cartRouter.get('/:cid', async (req, res) => {
     try {
         const {cid} = req.params;
-        console.log(cid, 'cid')
         const cartManager = new CartsManager();
         const data = await cartManager.getCartAndPopulate(cid);
 
@@ -20,10 +19,32 @@ cartRouter.get('/:cid', async (req, res) => {
 
         const {products} = payload;
 
-        console.log(products, 'products')
+        const productsWithTotal = products.map(product => {
+            return {
+                ...product,
+                totalPrice: product.productId.price * product.quantity
+            }
+        });
+
+        const cartTotalPrice = productsWithTotal.reduce((acc, curr) => acc += curr.totalPrice, 0);
+
+        const fixedPrices = productsWithTotal.map(product => {
+                return {
+                    ...product,
+                    totalPrice: product.totalPrice.toFixed(2)
+                }
+            })
+
+        const cartProductsWithTotal = {
+            cartProducts: [...fixedPrices],
+            cartTotalPrice: cartTotalPrice.toFixed(2)
+        }
+
+        //console.log(productsWithTotal, 'productsWithTotal')
+        console.log(cartProductsWithTotal, 'cartProductsWithTotal')
         
 
-        res.render('cartView', {products});
+        res.render('cartView', {cartProductsWithTotal});
 
     } catch (error) {
         sendResponse(error, res);

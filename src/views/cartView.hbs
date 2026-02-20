@@ -1,11 +1,15 @@
-<div id="cart-container">
-   
-    {{#each products}}
-    <div>
+<h2>Su carro de compras</h2>
+
+<div id="cart-view-container">
+    {{#each cartProductsWithTotal.cartProducts}}
+    <div class="cart-product-container">
         <p>Producto: {{productId.title}}</p>
         <p>Precio: ${{productId.price}}</p>
         <p>Cantidad: {{quantity}}</p>        
+        <p>Total por productos: $<span class="totalPrice">{{totalPrice}}</span></p>        
     </div>
     {{/each}}
 </div>
 
+<h2>Su total: <span id="cart-total-price">${{ cartProductsWithTotal.cartTotalPrice}}</span></h2>
+<script src="/js/cartView.js"></script>
