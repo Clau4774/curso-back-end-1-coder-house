@@ -26,7 +26,7 @@ const removeProductFromCart = async (e) => {
 
             if(cartTotalNewValue === 0) {
                 cartTotalPrice.parentNode.innerText = 'El carro está vació.';
-
+                findParentNode.remove();
                 return;    
             }
 
