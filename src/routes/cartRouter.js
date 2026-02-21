@@ -38,11 +38,7 @@ cartRouter.get('/:cid', async (req, res) => {
         const cartProductsWithTotal = {
             cartProducts: [...fixedPrices],
             cartTotalPrice: cartTotalPrice.toFixed(2)
-        }
-
-        //console.log(productsWithTotal, 'productsWithTotal')
-        console.log(cartProductsWithTotal, 'cartProductsWithTotal')
-        
+        }      
 
         res.render('cartView', {cartProductsWithTotal});
 

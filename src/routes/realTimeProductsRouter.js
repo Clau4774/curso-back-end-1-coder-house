@@ -18,7 +18,6 @@ realTimeProductsRoute.get('/', async (req, res) => {
 
         const productManager = new ProductManager();
         const products = await productManager.getProducts(limit, page, category, status, sort);
-        //console.log(products.payload, 'products real')
         const productsWithFixedPrice = products.payload.map(product => {
             return ({
             ...product,
@@ -26,8 +25,6 @@ realTimeProductsRoute.get('/', async (req, res) => {
             price: product.price.toFixed(2)
             })
         });
-
-        console.log(productsWithFixedPrice, 'productsWithFixedPrice')
         res.render('index', {productsWithFixedPrice});
     } catch (error) {
         console.error(error)

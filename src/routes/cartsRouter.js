@@ -1,7 +1,6 @@
 import express from 'express';
 import { CartsManager } from '../cartsManager/CartsManager.js';
 import {sendResponse} from '../utils/sendResponse.js'
-import { cartModel } from '../mongodb/models/cart.model.js';
 
 export const cartsRouter = express.Router();
 

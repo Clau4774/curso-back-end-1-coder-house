@@ -1,6 +1,6 @@
 export const sendResponse = (response, res) => {
 
-    const {status, payload, error, message} = response;
+    const {status, payload, error, message, pagination} = response;
 
     if(status === 200 || status === 201) {
 
@@ -13,6 +13,7 @@ export const sendResponse = (response, res) => {
         }
         return res.status(status).json({
             status: 'success',
+            pagination,
             payload
         })
     }

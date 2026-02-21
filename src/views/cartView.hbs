@@ -3,6 +3,7 @@
 <div id="cart-view-container">
     {{#each cartProductsWithTotal.cartProducts}}
     <div class="cart-product-container">
+        <button data-remove-button="{{productId._id}}" data-product-total="{{totalPrice}}">Quitar Producto del carro</button>
         <p>Producto: {{productId.title}}</p>
         <p>Precio: ${{productId.price}}</p>
         <p>Cantidad: {{quantity}}</p>        
@@ -11,5 +12,5 @@
     {{/each}}
 </div>
 
-<h2>Su total: <span id="cart-total-price">${{ cartProductsWithTotal.cartTotalPrice}}</span></h2>
+<h2>Su total: $<span id="cart-total-price">{{ cartProductsWithTotal.cartTotalPrice}}</span></h2>
 <script src="/js/cartView.js"></script>

@@ -74,6 +74,9 @@ export class ProductManager {
 
             const totalPages = Math.ceil(totalProducts / limit);
 
+            const hasNextPage = (totalPages - page) > 0 ? true : false ;
+            const hasPreviousPage = (page - 1 ) > 0 ? true : false ;
+
             const result = {
                 status: 200,
                 payload: allProducts,
@@ -81,9 +84,13 @@ export class ProductManager {
                 totalProducts,
                 totalPages,
                 currentPage: page,
+                hasNextPage,
+                hasPreviousPage,
                 limit
                 }
             }
+
+            console.log(result)
 
             return result;
 

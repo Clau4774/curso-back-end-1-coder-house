@@ -10,6 +10,7 @@ import { cartRouter } from './routes/cartRouter.js';
 import { __dirname } from './dirname/dirname.js';
 import { doConnection } from './mongodb/doConnection.js';
 import 'dotenv/config'
+import { ProductModel } from './mongodb/models/product.model.js';
 
 const dbConnection = process.env.MONGO_ACCESS;
 
@@ -43,7 +44,6 @@ app.use('/realTimeProducts', realTimeProductsRoute);
 app.use('/cart', cartRouter);
 
 initializeSocket();
-   
 
 httpServer.listen(PORT, () => {
     console.log(`Running on PORT: ${PORT}, route: http://localhost:${PORT}`)
