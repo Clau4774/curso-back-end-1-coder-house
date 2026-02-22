@@ -1,15 +1,14 @@
 const cartContainer = document.querySelector('#cart-view-container');
 const cartTotalPrice = document.querySelector('#cart-total-price');
 
-const removeProductFromCart = async (e) => {
+const removeProductFromCart = async e => {
     
     try {
         const productId = e.target.dataset.removeButton || '';
-        const cartId = document.URL.split('/').slice(-1).toString();
-        console.log(cartId)
-
+        
         if(!productId) return;
-
+        
+        const cartId = document.URL.split('/').slice(-1).toString();
 
         if(productId) {
             const deleteProduct = await fetch(`http://localhost:8080/api/carts/${cartId}/products/${productId}`, {
@@ -34,7 +33,7 @@ const removeProductFromCart = async (e) => {
 
             findParentNode.remove();
             
-            return 
+            return;
         }
 
         throw {status: 400, error: `Hubo un error, no se pudo eliminar el producto con id ${productId} del carro ${cartId}`}
@@ -44,4 +43,4 @@ const removeProductFromCart = async (e) => {
     }
 }
 
-cartContainer.addEventListener('click', removeProductFromCart)
+cartContainer.addEventListener('click', removeProductFromCart);

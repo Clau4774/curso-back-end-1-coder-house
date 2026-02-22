@@ -1,114 +1,21 @@
 import Router from 'express';
-import { ProductManager } from '../productManager/ProductManager.js';
-import { socketServer } from '../index.js';
-import { sendResponse } from '../utils/sendResponse.js';
+
+import { getProductsController } from '../controllers/productsControllers/getProductsController.js';
+import { getProductByIdController } from '../controllers/productsControllers/getProductByIdController.js';
+import { createProductController } from '../controllers/productsControllers/createProductController.js';
+import { updateProductByIdController } from '../controllers/productsControllers/updateProductByIdController.js';
+import { deleteProductController } from '../controllers/productsControllers/deleteProductController.js';
 
 export const productsRouter = Router();
 
 
 
-productsRouter.get('/', async (req, res) => {
-    try {
+productsRouter.get('/', getProductsController);
 
-        const limit = parseInt(req.query.limit) || 10;
-        const page = parseInt(req.query.page) || 1;
-        const category = req.query.category || '';
-        const status = req.query.status || '';
-        const sort = parseInt(req.query.sort)  || 1;
+productsRouter.get('/:pid', getProductByIdController);
 
-        const productManager = new ProductManager()
-        const data = await productManager.getProducts(limit, page, category, status, sort);
-        sendResponse(data, res);
+productsRouter.post('/', createProductController);
 
-    } catch (error) {
-        sendResponse(error, res);
-    }
-})
+productsRouter.put('/:pid', updateProductByIdController);
 
-productsRouter.get('/:pid', async (req, res) => {
-    try {
-        const {pid} = req.params; 
-        const productManager = new ProductManager()
-        const data = await productManager.getProduct(pid);
-        
-        sendResponse(data, res);
-
-    } catch (error) {
-        console.error(error);
-        sendResponse(error, res)
-    }
-})
-
-productsRouter.post('/', async (req, res) => {
-    try {
-        const productData = req.body;
-        
-        const productManager = new ProductManager();
-
-        const createProduct = await productManager.addProduct(productData);
-
-        console.log(createProduct, 'createProduct')
-
-        socketServer.emit('product', {type: 'newProduct', product: {...createProduct}});
-
-        sendResponse(createProduct, res);
-
-    } catch (error) {
-        console.error(error);
-        sendResponse(error, res);
-    }
-})
-
-productsRouter.put('/:pid', async (req, res) => {
-    try {
-        const {pid} = req.params;
-        const data = req.body;
-        if(pid.trim() === undefined) {
-            res.status(400).json({message: `El id no fue enviado`, status:400});
-        };
-
-        const updatedProduct = {
-            pid,
-            data
-        }
-
-
-        const productManager = new ProductManager();
-
-        const updateProduct = await productManager.updateProduct(updatedProduct);
-
-        if(updateProduct.status === 404) {
-            throw updateProduct;
-        }
-
-        res.json(updateProduct);
-
-
-    } catch (error) {
-        console.error(error);
-        res.status(error.code).json(error);
-    }
-})
-
-productsRouter.delete('/:pid', async (req, res) => {
-    try {
-        const {pid} = req.params;
-        if(pid.trim() === undefined) {
-            res.status(400).json({message: `El id no fue enviado`, status:400});
-        };
-        const productManager = new ProductManager();
-
-        const updateProduct = await productManager.deleteProduct(pid);
-
-        if(updateProduct.status === 404) {
-            throw updateProduct;
-        }
-
-        res.json(updateProduct);
-
-
-    } catch (error) {
-        console.error(error);
-        res.status(error.code).json(error);
-    }
-})
+productsRouter.delete('/:pid', deleteProductController);

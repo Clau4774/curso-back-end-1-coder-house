@@ -1,4 +1,3 @@
-import fs from 'node:fs/promises';
 import { ProductModel } from '../mongodb/models/product.model.js'
 
 export class ProductManager {
@@ -160,42 +159,19 @@ export class ProductManager {
                     status: 400
                 }
 
-                throw err
-            }
-
-            const productsList = await this.getProducts();
-
-            const findProduct = await this.getProduct(pid);
-
-            
-            if(!findProduct) {
-                
-                const err = {
-                    message: `Producto no encontrado con el id: ${pid}`,
-                    status: 404
-                }
-
                 throw err;
             }
 
+            const updateProduct = await ProductModel.findByIdAndUpdate(pid,
+                data,
+                {runValidators: true}
+            )
             
-            const updateProduct = {...findProduct, ...data};
-
-            console.log(updateProduct, "updateProduct")
-
-            const updatedProductsLists = productsList.map(productToUpdate => {
-                if(productToUpdate.id === Number(pid)) return updateProduct;
-                return productToUpdate;
-            });
-
-            const stringifiedProductsList = JSON.stringify(updatedProductsLists, null, 2)
-
-            await fs.writeFile(this.productsRoute, stringifiedProductsList);
 
             const productUpdateMessage = {
                 message: `Producto con id: ${pid}, ha sido modificado con éxito`,
                 status: 200,
-                updateProduct
+                payload: updateProduct
             }
 
             return productUpdateMessage;
@@ -239,11 +215,17 @@ export class ProductManager {
             //     deletedProduct: findProduct
             // }
 
-            return deleteProduct;
+            return {
+                payload: deleteProduct,
+                status: 200 
+            };
 
         } catch (error) {
             console.error(error);
-            return error;
+            return {
+               message: error,
+               status: 404
+            };
         }
     }
 
