@@ -1,125 +1,30 @@
-import express from 'express';
-import { CartsManager } from '../cartsManager/CartsManager.js';
-import {sendResponse} from '../utils/sendResponse.js'
+import {Router} from 'express';
+import { getCartsController } from '../controllers/cartsControllers/getCartsController.js';
+import { createNewCartController } from '../controllers/cartsControllers/createNewCartController.js';
+import { getCartByIdController } from '../controllers/cartsControllers/getCartByIdController.js';
+import { addProductToCartController } from '../controllers/cartsControllers/addProductToCartController.js';
+import { deleteProductFromCartController } from '../controllers/cartsControllers/deleteProductFromCartController.js';
+import { deleteAllProductsFromCartController } from '../controllers/cartsControllers/deleteAllProductsFromCartController.js';
+import { updateProductQuantityController } from '../controllers/cartsControllers/updateProductQuantityController.js';
 
-export const cartsRouter = express.Router();
+export const cartsRouter = Router();
 
 
-cartsRouter.get('/', async (req, res) => {
-    try {
-        const cartManager = new CartsManager();
-
-        const getCarts = await cartManager.getCarts();
-        console.log(getCarts, 'getCarts');
-
-        sendResponse(getCarts, res);
-    } catch (error) {
-        sendResponse(error, res);
-    }
-})
+cartsRouter.get('/', getCartsController);
 
 //creates a new cart
-cartsRouter.post('/', async (req, res) => {
-    try {
-        const cartManager = new CartsManager()
-        const newCart = await cartManager.createNewCart();
-        console.log(newCart,'newCart')
-        sendResponse(newCart, res);
-
-    } catch (error) {
-        console.error(error);
-        sendResponse(error, res);
-    }
-})
+cartsRouter.post('/', createNewCartController);
 
 
 //get cart by id
-cartsRouter.get('/:cid', async (req, res) => {
-    try {
-        const {cid} = req.params; 
-        const cartManager = new CartsManager()
-        const data = await cartManager.getCart(cid);
-        
-        if(data.status === 400 || data.status === 404) {
-            throw data;
-        } 
-        
-        sendResponse(data, res)
-
-    } catch (error) {
-        console.error(error);
-        sendResponse(error, res);
-        
-        
-    }
-})
+cartsRouter.get('/:cid', getCartByIdController);
 
 
 //add product to cart
-cartsRouter.post('/:cid/products/:pid', async (req, res) => {
-    try {
-        const {cid, pid} = req.params;
-        const cartManager = new CartsManager();
+cartsRouter.post('/:cid/products/:pid', addProductToCartController);
 
-        const addToCart = await cartManager.addProductToCart(cid, pid);
+cartsRouter.delete( '/:cid/products/:pid', deleteProductFromCartController)
 
-        console.log(addToCart, 'addToCart')
+cartsRouter.put('/:cid', deleteAllProductsFromCartController)
 
-        sendResponse(addToCart, res)
-
-
-    } catch (error) {
-        console.error(error);
-        sendResponse(error, res)
-    }
-})
-
-cartsRouter.delete( '/:cid/products/:pid', async (req, res) => {
-    try {
-        const { cid , pid } = req.params;
-
-        const cartManager = new CartsManager();
-
-        const deleteProduct = await cartManager.deleteProductFromCart(cid, pid);
-
-        if(!deleteProduct) {
-            throw deleteProduct;
-        }
-
-        sendResponse(deleteProduct, res);
-        
-    } catch (error) {
-        sendResponse(error, res);
-    }
-})
-
-cartsRouter.put('/:cid', async (req, res) => {
-    try {
-        const {cid} = req.params;
-        const cartManager = new CartsManager();
-        const emptyCart = await cartManager.deleteAllProductsFromCart(cid);
-
-        if(emptyCart.status) {
-            throw emptyCart;
-        }
-
-        sendResponse(emptyCart, res)
-    } catch (error) {
-        console.log(error);
-        sendResponse(error, res)
-    }
-})
-
-cartsRouter.put('/:cid/products/:pid', async (req, res) => {
-    try {
-        const {cid, pid} = req.params;
-        const quantity = req.body.quantity || 1;
-        const cartManager = new CartsManager();
-        const updateQuantity = await cartManager.sumProductsToCart(cid, pid, quantity)
-
-        sendResponse(updateQuantity, res);
-    } catch (error) {
-        console.log(error);
-        sendResponse(error, res);
-    }
-})
+cartsRouter.put('/:cid/products/:pid', updateProductQuantityController)
