@@ -36,12 +36,14 @@ export class ProductManager {
 
             let matchStage;
 
+            const statusBoolean = status === 'true' ? true : false;
+
             if(category && status) {
-                matchStage = { $match: { category: { $regex: category, $options: 'i' }, status: { $regex: status, $options: 'i'} } };
+                matchStage = { $match: { category: { $regex: category, $options: 'i' }, status: statusBoolean } };
             };
 
             if(!category && status) {
-                matchStage = { $match: {  status: { $regex: status, $options: 'i'} } };
+                matchStage = { $match: {  status: statusBoolean } };
             };
         
             if(category && !status) {
@@ -68,7 +70,7 @@ export class ProductManager {
             ]);
 
             const totalProducts = await ProductModel.countDocuments(
-            category ? { title: { $regex: category, $options: 'i' } } : {}
+            category ? { category: { $regex: category, $options: 'i' } } : {}
             );
 
             const totalPages = Math.ceil(totalProducts / limit);
@@ -97,12 +99,16 @@ export class ProductManager {
                     return `http://localhost:8080/api/products/?category=${category}&page=${nextPage}`
                 }
 
-                if(limit) {
+                if(limit && status) {
                     return `http://localhost:8080/api/products/?limit=${limit}&page=${nextPage}`
                 }
                 
                 if(category) {
                     return `http://localhost:8080/api/products/?category=${category}&page=${nextPage}`
+                }
+
+                if(status) {
+                    return `http://localhost:8080/api/products/?status=${status}&page=${nextPage}`
                 }
 
                 return `http://localhost:8080/api/products/?page=${nextPage}`;
