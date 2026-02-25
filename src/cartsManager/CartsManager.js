@@ -112,7 +112,10 @@ export class CartsManager {
 
         } catch (error) {
             console.log(error)
-            return error;
+            return {
+                error: error,
+                status: 404
+            };
         }
     }
 
@@ -196,8 +199,11 @@ export class CartsManager {
             }
 
         } catch (error) {
-            console.error;
-            return error;
+            console.error(error);
+            return {
+                error: error,
+                status: 404
+            };
         }
     }
 
@@ -246,8 +252,11 @@ export class CartsManager {
 
             return result;
         } catch (error) {
-            console.log(error);
-            return error;
+            console.error(error);
+            return {
+                error: error,
+                status: 404
+            };
         }
         
     }
@@ -273,8 +282,11 @@ export class CartsManager {
             }
             
         } catch (error) {
-            console.log(error);
-            return error;
+            console.error(error);
+            return {
+                error: error,
+                status: 404
+            };
         }
     }
 }

@@ -76,6 +76,74 @@ export class ProductManager {
             const hasNextPage = (totalPages - page) > 0 ? true : false ;
             const hasPreviousPage = (page - 1 ) > 0 ? true : false ;
 
+            const checkNextPage = () => {
+                if(!hasNextPage) return false;
+
+                const nextPage = page + 1;
+
+                if(category && page && status && sort && limit) {
+                    return `http://localhost:8080/api/products/?category=${category}&limit=${limit}&sort=${sort}&page=${nextPage}&status=${status}`
+                }
+
+                if(category && page && limit && sort) {
+                    return `http://localhost:8080/api/products/?category=${category}&limit=${limit}&sort=${sort}&page=${nextPage}`
+                }
+
+                if(category && page && limit) {
+                    return `http://localhost:8080/api/products/?category=${category}&limit=${limit}&page=${nextPage}`
+                }
+                
+                if(category && page) {
+                    return `http://localhost:8080/api/products/?category=${category}&page=${nextPage}`
+                }
+
+                if(limit) {
+                    return `http://localhost:8080/api/products/?limit=${limit}&page=${nextPage}`
+                }
+                
+                if(category) {
+                    return `http://localhost:8080/api/products/?category=${category}&page=${nextPage}`
+                }
+
+                return `http://localhost:8080/api/products/?page=${nextPage}`;
+            }
+
+            const checkPreviousPage = () => {
+                if(!hasPreviousPage) return false;
+
+                const prevPage = page - 1;
+
+                if(category && page && status && sort && limit) {
+                    return `http://localhost:8080/api/products/?category=${category}&limit=${limit}&sort=${sort}&page=${prevPage}&status=${status}`
+                }
+
+                if(category && page && limit && sort) {
+                    return `http://localhost:8080/api/products/?category=${category}&limit=${limit}&sort=${sort}&page=${prevPage}`
+                }
+
+                if(category && page && limit) {
+                    return `http://localhost:8080/api/products/?category=${category}&limit=${limit}&page=${prevPage}`
+                }
+                
+                if(category && page) {
+                    return `http://localhost:8080/api/products/?category=${category}&page=${prevPage}`
+                }
+
+                if(limit) {
+                    return `http://localhost:8080/api/products/?limit=${limit}&page=${prevPage}`
+                }
+                
+                if(category) {
+                    return `http://localhost:8080/api/products/?category=${category}&page=${prevPage}`
+                }
+
+                return `http://localhost:8080/api/products/?page=${prevPage}`;
+            }
+
+            const nextPage = checkNextPage();
+
+            const previousPage = checkPreviousPage();
+
             const result = {
                 status: 200,
                 payload: allProducts,
@@ -85,6 +153,8 @@ export class ProductManager {
                 currentPage: page,
                 hasNextPage,
                 hasPreviousPage,
+                previousPage,
+                nextPage,
                 limit
                 }
             }
@@ -198,22 +268,7 @@ export class ProductManager {
                 throw err;
             }
 
-            // if(!findProduct) {
-            //     const err = {
-            //         message: `No se ha encontrado producto con id: ${pid}`,
-            //         status: 404
-            //     }
-
-            //     throw err;
-            // }
-
             const deleteProduct = await ProductModel.deleteOne({_id: pid});
-
-            // const operationSuccess = {
-            //     message: `Producto con id: ${pid} eliminado con éxito`,
-            //     status: 200,
-            //     deletedProduct: findProduct
-            // }
 
             return {
                 payload: deleteProduct,
